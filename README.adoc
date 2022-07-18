@@ -1,0 +1,24 @@
+= Media Files Backup (MFB)
+
+Backup your media files in an easy and fast way.
+
+== Installation and Getting Started
+
+=== Backup your files using the script
+* Add the environment variables (con/env.conf)
+* Mount the input and output end points (conf/device.conf)
+* Run the script (launch_backup.sh) with the following arguments:
+  - The device ID (ex: 6t, 7t, etc. See conf/device.conf)
+  - The media type (IMG or VID)
+----
+$MFB_BIN_DIR/launch_backup.sh 6t IMG
+----
+
+=== Backup your files using the Frontend
+* Start the backend (server.js - requires Node.js) in the same machine where the scripts are installed
+* Start the fronted (ng serve or ng build and deploy)
+
+
+=== Upcoming changes
+* Better documentation
+* Add a system service to launch the backup process automatically
