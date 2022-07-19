@@ -21,4 +21,4 @@ $MFB_BIN_DIR/launch_backup.sh 6t IMG
 
 === Upcoming changes
 * Better documentation
-* Add a system service to launch the backup process automatically
+* Add a system service to launch the backup process automatically (ongoing)
