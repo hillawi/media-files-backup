@@ -1,9 +1,9 @@
 [
   {
-    "deviceId": "6t",
-    "deviceUuid": "TODO",
-    "deviceName": "OnePlus 6T",
-    "ownerName": "John Doe",
+    "id": "6t",
+    "uuid": "TODO",
+    "name": "OnePlus 6T",
+    "owner": "John Doe",
     "type": "source",
     "mountPath": {
       "img": "/opt/mfb/device/6t/img",
@@ -15,10 +15,10 @@
     }
   },
   {
-    "deviceId": "7t",
-    "deviceUuid": "TODO",
-    "deviceName": "OnePlus 7T",
-    "ownerName": "Jane Doe",
+    "id": "7t",
+    "uuid": "TODO",
+    "name": "OnePlus 7T",
+    "owner": "Jane Doe",
     "type": "source",
     "mountPath": {
       "img": "/opt/mfb/device/7t/img",
@@ -30,10 +30,10 @@
     }
   },
   {
-    "deviceId": "sanDiskSsd1To",
-    "deviceUuid": "106B-FF6A",
-    "deviceName": "SanDisk SSD 1 TO",
-    "ownerName": "John Doe",
+    "id": "sanDiskSsd1To",
+    "uuid": "106B-FF6A",
+    "name": "SanDisk SSD 1 TO",
+    "owner": "John Doe",
     "type": "target",
     "mountPath": {
       "img": "/opt/mfb/device/sanDiskSsd1To/img",
@@ -41,10 +41,10 @@
     }
   },
   {
-    "deviceId": "wdElements1To",
-    "deviceUuid": "C04CADE94CADDA84",
-    "deviceName": "WD Elements SE 1 TO",
-    "ownerName": "John Doe",
+    "id": "wdElements1To",
+    "uuid": "C04CADE94CADDA84",
+    "name": "WD Elements SE 1 TO",
+    "owner": "John Doe",
     "type": "target",
     "mountPath": "/opt/mfb/device/wdElements1To"
   }
