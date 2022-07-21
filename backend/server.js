@@ -1,7 +1,10 @@
-const http = require('http');
+const express = require('express')
 const {exec} = require("child_process");
 
 const port = 8387;
+const app = express();
+
+app.use(express.json);
 
 function BackupExecutor() {
     this.execCommand = function (cmd) {
@@ -23,67 +26,52 @@ function BackupExecutor() {
     }
 }
 
-function launchBackup(request, response) {
-    request.on('data', async chunk => {
-        const content = JSON.parse(chunk);
-        const mediaTypeId = content.mediaTypeId;
-        const phoneId = content.phoneId;
+function launchBackup(req, res) {
+    const content = req.body;
+    const mediaTypeId = content.mediaTypeId;
+    const phoneId = content.phoneId;
 
-        const backupExecutor = new BackupExecutor();
-        const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + phoneId + " " + mediaTypeId;
+    res.set(content);
+    res.sendStatus(200);
 
-        await backupExecutor.execCommand(cmd)
-            .then((output) => {
-                response.statusCode = 200;
-                response.write('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-            }).catch((err) => {
-                response.statusCode = 500;
-                response.write('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-            });
+    /*        const backupExecutor = new BackupExecutor();
+            const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + phoneId + " " + mediaTypeId;
 
-        response.end();
-    });
+            await backupExecutor.execCommand(cmd)
+                .then((output) => {
+                    res.set('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
+                    res.sendStatus(200);
+                }).catch((err) => {
+                    res.set('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
+                    res.sendStatus(500);
+                });*/
 }
 
-const requestHandler = (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
-    response.setHeader('Access-Control-Allow-Headers', 'content-type');
-    response.setHeader('Access-Control-Max-Age', 2592000);
-    response.setHeader('Content-Type', 'application/json');
-    response.setHeader('X-Powered-By', 'mfb-server');
+function setHeaders(res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type');
+    res.setHeader('Access-Control-Max-Age', 2592000);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('X-Powered-By', 'mfb-server');
+}
 
-    switch (req.method) {
-        case 'OPTIONS':
-            response.end();
-            break;
-        case 'GET':
-            break;
-        case 'POST':
-            switch (request.url) {
-                case '/launchBackup':
-                    launchBackup(request, response);
-                    break;
-                default:
-                    response.statusCode = 404;
-                    response.end();
-                    break;
-            }
-            break;
-        default:
-            response.statusCode = 404;
-            response.write('{"error: "Invalid method"}');
-            response.end();
-            break;
-    }
-};
+app.get('/devices', (req, res) => {
+    res.set('OK');
+    res.sendStatus(200);
+})
 
-const server = http.createServer(requestHandler);
-
-server.listen(port, (err) => {
-    if (err) {
-        return console.log('something bad happened', err)
-    }
-
-    console.log(`server is listening on ${port}`)
+app.options('/launchBackup', (req, res) => {
+    setHeaders(res);
+    res.sendStatus(200);
 });
+
+app.post('/launchBackup', (req, res) => {
+    //setHeaders(res);
+    //launchBackup(req, res);
+    res.json(req.body);
+});
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})
