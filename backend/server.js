@@ -31,14 +31,14 @@ function BackupExecutor() {
 
 function launchBackup(req, res) {
     const content = req.body;
-    const mediaTypeId = content.mediaTypeId;
-    const phoneId = content.phoneId;
+    const mediaType = content.mediaType;
+    const deviceId = content.deviceId;
 
     res.set(content);
     res.sendStatus(200);
 
     /*        const backupExecutor = new BackupExecutor();
-            const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + phoneId + " " + mediaTypeId;
+            const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + deviceId + " " + mediaType;
 
             await backupExecutor.execCommand(cmd)
                 .then((output) => {
@@ -60,6 +60,7 @@ function setHeaders(res) {
 }
 
 app.get('/devices', (req, res) => {
+    setHeaders(res);
     try {
         const data = JSON.parse(fs.readFileSync(DEVICES_CONF_PATH, 'utf8'));
         res.json(data);
@@ -73,8 +74,17 @@ app.options('/launchBackup', (req, res) => {
     res.sendStatus(200);
 });
 
-app.post('/launchBackup', (req, res) => {
-    //setHeaders(res);
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
+
+app.post('/launchBackup', async (req, res) => {
+    setHeaders(res);
+
+    await sleep(5000);
+
     //launchBackup(req, res);
     res.json(req.body);
 });
