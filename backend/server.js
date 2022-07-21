@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 
 const DEVICES_CONF_PATH = process.env.MFB_DEVICES_CONF_PATH;
+const SCRIPT_PATH = process.env.MFB_BIN_DIR + "/" + process.env.MFB_SCRIPT_NAME;
 
 function BackupExecutor() {
     this.execCommand = function (cmd) {
@@ -29,25 +30,23 @@ function BackupExecutor() {
     }
 }
 
-function launchBackup(req, res) {
+async function launchBackup(req, res) {
     const content = req.body;
     const mediaType = content.mediaType;
-    const deviceId = content.deviceId;
+    const sourceDeviceId = content.sourceDeviceId;
+    const targetDeviceId = content.targetDeviceId;
 
-    res.set(content);
-    res.sendStatus(200);
+    const backupExecutor = new BackupExecutor();
+    const cmd = "bash " + SCRIPT_PATH + " " + sourceDeviceId + " " + targetDeviceId + " " + mediaType;
 
-    /*        const backupExecutor = new BackupExecutor();
-            const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + deviceId + " " + mediaType;
-
-            await backupExecutor.execCommand(cmd)
-                .then((output) => {
-                    res.set('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-                    res.sendStatus(200);
-                }).catch((err) => {
-                    res.set('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-                    res.sendStatus(500);
-                });*/
+    await backupExecutor.execCommand(cmd)
+        .then((output) => {
+            res.json('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
+            res.sendStatus(200);
+        }).catch((err) => {
+            res.json('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
+            res.sendStatus(500);
+        });
 }
 
 function setHeaders(res) {
@@ -83,9 +82,9 @@ function sleep(ms) {
 app.post('/launchBackup', async (req, res) => {
     setHeaders(res);
 
-    await sleep(5000);
+    //await sleep(5000);
 
-    //launchBackup(req, res);
+    await launchBackup(req, res);
     res.json(req.body);
 });
 

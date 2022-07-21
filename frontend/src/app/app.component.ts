@@ -63,7 +63,11 @@ export class AppComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const body = {mediaType: this.backupForm.value.mediaType?.id, deviceId: this.backupForm.value.sourceDevice?.id};
+    const body = {
+      mediaType: this.backupForm.value.mediaType?.id,
+      sourceDeviceId: this.backupForm.value.sourceDevice?.id,
+      targetDeviceId: this.backupForm.value.targetDevice?.id
+    };
     const options = {};
 
     this.http.post<ResponseMessage>(this.ROOT_URL + '/launchBackup', body, options)

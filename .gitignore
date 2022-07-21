@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-/dist
+frontend/dist
 /tmp
 /out-tsc
 /bazel-out
@@ -29,9 +29,9 @@ frontend/yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
+frontend/.angular/cache
+*/.sass-cache/
+*/connect.lock
 /coverage
 /libpeerconnection.log
 testem.log
