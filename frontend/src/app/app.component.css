@@ -7,6 +7,10 @@ h6 {
   margin: 8px 0;
 }
 
+.spinner {
+  margin: 5px;
+}
+
 .source-target-arrow {
   margin-top: 22px;
   margin-right: 10px;
@@ -78,7 +82,7 @@ footer a {
   max-width: 600px;
   border-radius: 6px;
   padding-top: 45px;
-  margin-top: 8px;
+  margin-top: 45px;
   overflow: hidden;
   background-color: rgba(56, 12, 42, 0.9);
   font-size: 9px;

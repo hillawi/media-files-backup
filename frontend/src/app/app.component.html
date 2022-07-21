@@ -47,7 +47,7 @@
     </div>
 
     <div class="card-container">
-      <mat-spinner [diameter]="20" *ngIf="showSpinner() | async"></mat-spinner>
+      <mat-spinner [diameter]="20" *ngIf="showSpinner() | async" class="spinner"></mat-spinner>
       <button mat-raised-button type="submit" [disabled]="backupForm.invalid || backupForm.pending">
         Launch Backup
       </button>
