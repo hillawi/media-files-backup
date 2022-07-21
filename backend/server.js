@@ -1,10 +1,13 @@
 const express = require('express')
+const fs = require('fs');
 const {exec} = require("child_process");
 
 const port = 8387;
 const app = express();
 
-app.use(express.json);
+app.use(express.json());
+
+const DEVICES_CONF_PATH = process.env.MFB_DEVICES_CONF_PATH;
 
 function BackupExecutor() {
     this.execCommand = function (cmd) {
@@ -57,8 +60,12 @@ function setHeaders(res) {
 }
 
 app.get('/devices', (req, res) => {
-    res.set('OK');
-    res.sendStatus(200);
+    try {
+        const data = JSON.parse(fs.readFileSync(DEVICES_CONF_PATH, 'utf8'));
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+    }
 })
 
 app.options('/launchBackup', (req, res) => {
