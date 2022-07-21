@@ -23,6 +23,28 @@ function BackupExecutor() {
     }
 }
 
+function launchBackup(request, response) {
+    request.on('data', async chunk => {
+        const content = JSON.parse(chunk);
+        const mediaTypeId = content.mediaTypeId;
+        const phoneId = content.phoneId;
+
+        const backupExecutor = new BackupExecutor();
+        const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + phoneId + " " + mediaTypeId;
+
+        await backupExecutor.execCommand(cmd)
+            .then((output) => {
+                response.statusCode = 200;
+                response.write('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
+            }).catch((err) => {
+                response.statusCode = 500;
+                response.write('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
+            });
+
+        response.end();
+    });
+}
+
 const requestHandler = (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
@@ -31,37 +53,28 @@ const requestHandler = (request, response) => {
     response.setHeader('Content-Type', 'application/json');
     response.setHeader('X-Powered-By', 'mfb-server');
 
-    if (request.method === 'OPTIONS') {
-        response.end();
-    } else if (request.method === 'POST') {
-        if (request.url === '/launchBackup') {
-            request.on('data', async chunk => {
-                const content = JSON.parse(chunk);
-                const mediaTypeId = content.mediaTypeId;
-                const phoneId = content.phoneId;
-
-                const backupExecutor = new BackupExecutor();
-                const cmd = "bash $MFB_BIN_DIR/$MFB_SCRIPT_NAME " + phoneId + " " + mediaTypeId;
-
-                await backupExecutor.execCommand(cmd)
-                    .then((output) => {
-                        response.statusCode = 200;
-                        response.write('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-                    }).catch((err) => {
-                        response.statusCode = 500;
-                        response.write('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-                    });
-
-                response.end();
-            });
-        } else {
-            response.statusCode = 404;
+    switch (req.method) {
+        case 'OPTIONS':
             response.end();
-        }
-    } else {
-        response.statusCode = 404;
-        response.write('{"error: "Invalid method"}');
-        response.end();
+            break;
+        case 'GET':
+            break;
+        case 'POST':
+            switch (request.url) {
+                case '/launchBackup':
+                    launchBackup(request, response);
+                    break;
+                default:
+                    response.statusCode = 404;
+                    response.end();
+                    break;
+            }
+            break;
+        default:
+            response.statusCode = 404;
+            response.write('{"error: "Invalid method"}');
+            response.end();
+            break;
     }
 };
 
