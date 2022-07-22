@@ -4,5 +4,6 @@
 
 === Start the backend server
 ----
+npm install
 MFB_DEVICES_CONF_PATH=$MFB_CONF_DIR/devices.json node server.js
 ----
