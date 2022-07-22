@@ -18,10 +18,12 @@ CONF_DIR=$MFB_CONF_DIR
 subFolders=()
 
 numberOfCopiedFiles=0
-lastBackupDateFileName="${CONF_DIR}/latest_${DEVICE_ID}_${MEDIA_TYPE}"
+lastBackupDateFileName="latest_${DEVICE_ID}_${MEDIA_TYPE}"
 
 # If the latest file contains nothing, put a very old date on it
 lastBackupDate=$(cat "$lastBackupDateFileName" 2>/dev/null || echo "1970-01-01")
+
+printf "Start date %s\n" "$lastBackupDate"
 
 while read -r tmp; do
   [[ "$(echo "$tmp" | awk '{print length}')" -gt 0 ]] || {
@@ -40,8 +42,6 @@ while read -r tmp; do
     subFolders+=("$subFolder")
   fi
 
-  echo -ne "Processing file: $file"\\r
-
   cp -p "$p" "$subFolder" 2>/dev/null
 
   lastProcessedFile=$file
@@ -54,4 +54,5 @@ echo "$numberOfCopiedFiles" > "$$.mfb.pid"
 if [[ "$(echo "$lastProcessedFile" | awk '{print length}')" -gt 0 ]]; then
   backup_date=$(date -d "$((${lastProcessedFile:4:8}))" +'%Y-%m-%d')
   echo "$backup_date" > "$lastBackupDateFileName"
+  printf "Last processed file: %s\n" "$lastProcessedFile"
 fi

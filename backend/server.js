@@ -41,11 +41,9 @@ async function launchBackup(req, res) {
 
     await backupExecutor.execCommand(cmd)
         .then((output) => {
-            res.json('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-            res.sendStatus(200);
+            res.json(JSON.parse('{"output": "' + output.replace(/(\r\n|\r|\n)/g, '<br>') + '"}'));
         }).catch((err) => {
-            res.json('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}');
-            res.sendStatus(500);
+            res.status(500).json(JSON.parse('{"error": "' + err.replace(/(\r\n|\r|\n)/g, '<br>') + '"}'));
         });
 }
 
@@ -85,7 +83,6 @@ app.post('/launchBackup', async (req, res) => {
     //await sleep(5000);
 
     await launchBackup(req, res);
-    res.json(req.body);
 });
 
 app.listen(port, () => {

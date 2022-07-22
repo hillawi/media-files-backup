@@ -105,7 +105,7 @@ numberOfCopiedFiles=$(cat "$childPid.mfb.pid")
 rm "$childPid.mfb.pid" || echo "Cannot remove temporary files."
 
 if [[ $numberOfCopiedFiles -gt 0 ]]; then
-  printf '\nNumber of files copied: %s.\nDone. Goodbye :)\n' "$numberOfCopiedFiles"
+  printf 'Number of files copied: %s.\nDone. Goodbye :)\n' "$numberOfCopiedFiles"
 else
   echo "All files are up to date. Nothing to do. Have a good day :)"
 fi

@@ -73,13 +73,12 @@ export class AppComponent implements OnInit {
     this.http.post<ResponseMessage>(this.ROOT_URL + '/launchBackup', body, options)
       .subscribe({
         next: (data) => {
-          console.log(data.output);
           this.successfulRequest = true;
           this.responseMessage = data.output;
         }, error: (error) => {
-          console.log(error);
+          console.log("error:", error)
           this.successfulRequest = false;
-          this.responseMessage = error.error.text;
+          this.responseMessage = error.error.error;
         }
       });
   }
