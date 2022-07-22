@@ -23,3 +23,29 @@ $MFB_BIN_DIR/launch_backup.sh 6t IMG
 * Device configuration (ongoing)
 * Better documentation
 * Add a system service to launch the backup process automatically
+
+
+=== Sequence Diagrams
+
+==== Using the Frontend
+```mermaid
+sequenceDiagram
+    ACTOR john as John Doe
+    participant front as Frontend
+    participant rest as REST API
+    participant bash as BASH
+    participant config as CONFIGURATION
+    john->>+front: Access the home page
+    front->>+rest: Get devices
+    rest->>config: Read configurations
+    rest-->>-front: Devices list
+    front->>-john: Show the devices list
+    john->>+front: Launch backup
+    front->>+rest: Backup files
+    rest->>+bash: Backup files
+    bash->>config: Read configurations
+    bash->>bash: Do backup
+    bash->>-rest: Files backed up
+    rest->>-front: Files backed up
+    front->>-john: Backup done
+```
