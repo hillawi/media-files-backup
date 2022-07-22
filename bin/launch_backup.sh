@@ -18,6 +18,7 @@ ERROR_MEDIA_TYPE_UNKNOWN=2
 ERROR_INPUT_FOLDER_NOTFOUND=3
 ERROR_OUTPUT_FOLDER_NOTFOUND=4
 ERROR_BAD_DEVICE_CONF=5
+ERROR_BACKUP_ERROR=6
 
 if [[ $# -ne 3 ]]; then
   echo "The source device ID, the target device ID and the media type (IMG or VID) are required"
@@ -99,6 +100,13 @@ bash "$BIN_DIR/do_backup.sh" "$sourceDeviceMountPath" "$FILE_SUFFIX" "$MEDIA_TYP
 childPid=$!
 
 wait $childPid
+
+exitCode=$?
+
+[[ $exitCode -eq 0 ]] || {
+  echo "Backup failed"
+  exit $ERROR_BACKUP_ERROR
+}
 
 numberOfCopiedFiles=$(cat "$childPid.mfb.pid")
 
