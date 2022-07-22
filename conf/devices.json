@@ -10,8 +10,8 @@
       "vid": "/opt/mfb/device/6t/vid"
     },
     "targetSubPath": {
-      "img": "OnePlus\\ 6T/Pictures",
-      "vid": "OnePlus\\ 6T/Videos"
+      "img": "OnePlus6T/Pictures",
+      "vid": "OnePlus6T/Videos"
     }
   },
   {
@@ -25,8 +25,8 @@
       "vid": "/opt/mfb/device/7t/vid"
     },
     "targetSubPath": {
-      "img": "OnePlus\\ 7T/Pictures",
-      "vid": "OnePlus\\ 7T/Videos"
+      "img": "OnePlus7T/Pictures",
+      "vid": "OnePlus7T/Videos"
     }
   },
   {
@@ -35,10 +35,7 @@
     "name": "SanDisk SSD 1 TO",
     "owner": "John Doe",
     "type": "target",
-    "mountPath": {
-      "img": "/opt/mfb/device/sanDiskSsd1To/img",
-      "vid": "/opt/mfb/device/sanDiskSsd1To/vid"
-    }
+    "mountPath": "/opt/mfb/device/sanDiskSsd1To"
   },
   {
     "id": "wdElements1To",
