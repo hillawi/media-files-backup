@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {SpinnerService} from "../service/spinner-service";
+import {environment} from "../environments/environment";
 
 interface Device {
   id: string;
@@ -27,7 +28,7 @@ class ResponseMessage {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  readonly ROOT_URL = 'http://localhost:8387';
+  readonly apiBaseUrl = environment.apiURL;
   readonly mediaTypes: MediaType[] = [
     {name: 'Pictures', id: 'IMG'},
     {name: 'Videos', id: 'VID'}
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit {
   }
 
   initDevices(): void {
-    this.http.get<Device[]>(this.ROOT_URL + '/devices').subscribe(res => {
+    this.http.get<Device[]>(this.apiBaseUrl + '/devices').subscribe(res => {
       this.sourceDevices = res.filter(device => device.type === 'source');
       this.targetDevices = res.filter(device => device.type === 'target');
     });
@@ -70,7 +71,7 @@ export class AppComponent implements OnInit {
     };
     const options = {};
 
-    this.http.post<ResponseMessage>(this.ROOT_URL + '/launchBackup', body, options)
+    this.http.post<ResponseMessage>(this.apiBaseUrl + '/launchBackup', body, options)
       .subscribe({
         next: (data) => {
           this.successfulRequest = true;
