@@ -33,7 +33,7 @@ sequenceDiagram
     ACTOR john as John Doe
     participant front as Frontend
     participant rest as REST API
-    participant bash as BASH
+    participant bash as SYSTEM SCRIPT
     participant config as CONFIGURATION
     john->>+front: Access the home page
     front->>+rest: Get devices
