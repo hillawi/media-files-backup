@@ -1,0 +1,48 @@
+[
+  {
+    "id": "6t",
+    "uuid": "TODO",
+    "name": "OnePlus 6T",
+    "owner": "John Doe",
+    "type": "source",
+    "mountPath": {
+      "img": "/opt/mfb/device/6t/img",
+      "vid": "/opt/mfb/device/6t/vid"
+    },
+    "targetSubPath": {
+      "img": "OnePlus6T/Pictures",
+      "vid": "OnePlus6T/Videos"
+    }
+  },
+  {
+    "id": "7t",
+    "uuid": "TODO",
+    "name": "OnePlus 7T",
+    "owner": "Jane Doe",
+    "type": "source",
+    "mountPath": {
+      "img": "/opt/mfb/device/7t/img",
+      "vid": "/opt/mfb/device/7t/vid"
+    },
+    "targetSubPath": {
+      "img": "OnePlus7T/Pictures",
+      "vid": "OnePlus7T/Videos"
+    }
+  },
+  {
+    "id": "sanDiskSsd1To",
+    "uuid": "106B-FF6A",
+    "name": "SanDisk SSD 1 TO",
+    "owner": "John Doe",
+    "type": "target",
+    "mountPath": "/opt/mfb/device/sanDiskSsd1To"
+  },
+  {
+    "id": "wdElements1To",
+    "uuid": "C04CADE94CADDA84",
+    "name": "WD Elements SE 1 TO",
+    "owner": "John Doe",
+    "type": "target",
+    "mountPath": "/opt/mfb/device/wdElements1To"
+  }
+]
