@@ -9,6 +9,7 @@ pipeline {
         sh 'javac --version'
         echo "Working directory is:"
         sh 'pwd'
+        sh 'node -v'
       }
     }
   }
