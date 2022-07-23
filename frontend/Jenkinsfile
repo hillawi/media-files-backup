@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('NPM version') {
       steps {
-        sh 'node -v'
+        sh 'java --version'
         echo "Working directory is: $PWD"
       }
     }
