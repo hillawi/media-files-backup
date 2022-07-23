@@ -1,0 +1,14 @@
+pipeline {
+  agent {
+    label 'docker-agent'
+  }
+
+  stages {
+    stage('NPM version') {
+      steps {
+        sh 'node -v'
+        echo "Working directory is: $PWD"
+      }
+    }
+  }
+}
