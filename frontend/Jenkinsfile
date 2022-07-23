@@ -4,10 +4,11 @@ pipeline {
   }
 
   stages {
-    stage('NPM version') {
+    stage('JDK version') {
       steps {
-        sh 'java --version'
-        echo "Working directory is: $PWD"
+        sh 'javac --version'
+        echo "Working directory is:"
+        sh 'pwd'
       }
     }
   }
