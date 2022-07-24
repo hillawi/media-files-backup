@@ -8,12 +8,27 @@ pipeline {
   }
 
   stages {
-    stage('JDK version') {
+    stage('Build') {
       steps {
-        sh 'javac --version'
-        echo "Working directory is:"
-        sh 'pwd'
-        sh 'node -v'
+        echo 'Installing'
+        sh 'npm install'
+        echo 'Building'
+        sh 'npm build'
+      }
+    }
+    stage('Deploy') {
+      when {
+        expression {
+          currentBuild.result == null || currentBuild.result == 'SUCCESS'
+        }
+      }
+      environment {
+        ACCESS_KEY = credentials('raspberry-pi-ssh')
+      }
+      steps {
+        echo 'Deploying'
+        sh 'printenv'
+        sh('scp dist/mfb-frontend/* pi:$ACCESS_KEY@192.168.0.24:/tmp')
       }
     }
   }
