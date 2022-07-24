@@ -1,10 +1,4 @@
 pipeline {
-  def remote = [:]
-  remote.name = 'raspberry-pi'
-  remote.host = '192.168.0.24'
-  remote.user = 'pi'
-  remote.password = '${ACCESS_KEY}'
-  remote.allowAnyHosts = true
   agent {
     label 'docker-agent'
   }
@@ -23,20 +17,22 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS'
+
+    withCredentials([sshUserPrivateKey(credentialsId: 'raspberry-pi-ssh', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+        remote.user = userName
+        remote.identityFile = identity
+        stage('Deploy') {
+          when {
+            expression {
+              currentBuild.result == null || currentBuild.result == 'SUCCESS'
+            }
+          }
+          steps {
+          dir('frontend') {
+              sshPut remote: remote, from: 'dist/mfb-frontend/index.html', into: '.'
+            }
+          }
         }
-      }
-      environment {
-        ACCESS_KEY = credentials('raspberry-pi-ssh')
-      }
-      steps {
-      dir('frontend') {
-          sshCommand remote: remote, command: "ls -lrt"
-        }
-      }
     }
   }
 }
