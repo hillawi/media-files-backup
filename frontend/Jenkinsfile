@@ -14,7 +14,7 @@ pipeline {
         sh 'npm install ./frontend'
         echo 'Building'
         sh 'npm install @angular/cli'
-        sh 'pushd frontend && ng build && popd'
+        sh 'cd frontend && ng build && cd ..'
       }
     }
     stage('Deploy') {
