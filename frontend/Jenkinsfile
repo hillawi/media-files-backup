@@ -29,7 +29,7 @@ pipeline {
       steps {
       dir('frontend') {
           sh 'printenv'
-          sh('scp dist/mfb-frontend/* pi:$ACCESS_KEY@192.168.0.24:/tmp')
+          sh('sshpass -p $ACCESS_KEY scp -r dist/mfb-frontend pi@192.168.0.24:/tmp')
         }
       }
     }
