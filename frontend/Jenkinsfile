@@ -1,4 +1,10 @@
 pipeline {
+  def remote = [:]
+  remote.name = 'raspberry-pi'
+  remote.host = '192.168.0.24'
+  remote.user = 'pi'
+  remote.password = '${ACCESS_KEY}'
+  remote.allowAnyHosts = true
   agent {
     label 'docker-agent'
   }
@@ -28,8 +34,7 @@ pipeline {
       }
       steps {
       dir('frontend') {
-          sh 'printenv'
-          sh('sshpass -p $ACCESS_KEY scp -r dist/mfb-frontend pi@192.168.0.24:/tmp')
+          sshCommand remote: remote, command: "ls -lrt"
         }
       }
     }
