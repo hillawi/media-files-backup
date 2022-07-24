@@ -11,10 +11,10 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Installing'
-        sh 'npm install ./frontend'
+        sh 'cd frontend && npm install'
         echo 'Building'
-        sh 'npm install -g @angular/cli'
-        sh 'cd frontend && ng build && cd ..'
+        sh 'npm install @angular/cli'
+        sh 'ng build'
       }
     }
     stage('Deploy') {
@@ -29,7 +29,7 @@ pipeline {
       steps {
         echo 'Deploying'
         sh 'printenv'
-        sh('scp ./frontend/dist/mfb-frontend/* pi:$ACCESS_KEY@192.168.0.24:/tmp')
+        sh('scp dist/mfb-frontend/* pi:$ACCESS_KEY@192.168.0.24:/tmp')
       }
     }
   }
