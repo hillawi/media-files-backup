@@ -3,6 +3,10 @@ pipeline {
     label 'docker-agent'
   }
 
+  tools {
+    nodejs ''NodeJS
+  }
+
   stages {
     stage('JDK version') {
       steps {
