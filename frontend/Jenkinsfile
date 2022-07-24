@@ -11,9 +11,9 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Installing'
-        sh 'npm install'
+        sh 'npm install ./frontend'
         echo 'Building'
-        sh 'npm build'
+        sh 'npm build ./frontend'
       }
     }
     stage('Deploy') {
@@ -28,7 +28,7 @@ pipeline {
       steps {
         echo 'Deploying'
         sh 'printenv'
-        sh('scp dist/mfb-frontend/* pi:$ACCESS_KEY@192.168.0.24:/tmp')
+        sh('scp ./frontend/dist/mfb-frontend/* pi:$ACCESS_KEY@192.168.0.24:/tmp')
       }
     }
   }
