@@ -13,7 +13,7 @@ pipeline {
         echo 'Installing'
         sh 'cd frontend && npm install'
         echo 'Building'
-        sh 'npm install @angular/cli'
+        sh 'npm install @angular/cli --location=global'
         sh 'ng build'
       }
     }
