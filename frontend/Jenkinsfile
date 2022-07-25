@@ -24,13 +24,13 @@ pipeline {
         }
       }
       steps {
-      dir('frontend') {
-        withCredentials([sshUserPrivateKey(credentialsId: 'raspberry-pi-ssh', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
-          remote.user = userName
-          remote.identityFile = identity
-          sshPut remote: remote, from: 'dist/mfb-frontend/index.html', into: '.'
-        }
-        }
+        dir('frontend') {
+            withCredentials([usernamePassword(credentialsId: 'raspberry-pi-key', usernameVariable: 'userName', passwordVariable: 'password')]) {
+                remote.user = userName
+                remote.password = password
+                sshPut remote: remote, from: 'dist/mfb-frontend/index.html', into: '.'
+            }
+          }
       }
     }
   }
