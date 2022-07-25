@@ -35,7 +35,7 @@ pipeline {
             remote.allowAnyHosts = true
             remote.user = '${SSH_CRED_USR}'
             remote.password = '${SSH_CRED_PSW}'
-            sshPut remote: remote, from: 'dist/mfb-frontend/index.html', into: '.'
+            sshPut remote: remote, from: 'dist/mfb-frontend/*', into: '.'
           }
         }
       }
