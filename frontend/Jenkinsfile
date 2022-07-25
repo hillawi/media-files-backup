@@ -18,19 +18,26 @@ pipeline {
       }
     }
     stage('Deploy') {
+      environment {
+        SSH_CRED = credentials('raspberry-pi-key')
+      }
       when {
         expression {
           currentBuild.result == null || currentBuild.result == 'SUCCESS'
         }
       }
       steps {
-        dir('frontend') {
-            withCredentials([usernamePassword(credentialsId: 'raspberry-pi-key', usernameVariable: 'userName', passwordVariable: 'password')]) {
-                remote.user = userName
-                remote.password = password
-                sshPut remote: remote, from: 'dist/mfb-frontend/index.html', into: '.'
-            }
+        script {
+          dir('frontend') {
+            def remote = [:]
+            remote.name = "node"
+            remote.host = "192.168.0.24"
+            remote.allowAnyHosts = true
+            remote.user = '${SSH_CRED_USR}'
+            remote.password = '${SSH_CRED_PSW}'
+            sshPut remote: remote, from: 'dist/mfb-frontend/index.html', into: '.'
           }
+        }
       }
     }
   }
