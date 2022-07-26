@@ -36,7 +36,7 @@ pipeline {
             remote.user = '${SSH_CRED_USR}'
             remote.password = '${SSH_CRED_PSW}'
             zip zipFile: 'mfb.zip', dir:'dist/mfb-frontend'
-            sshPut remote: remote, from: 'mfb.zip', into: '/tmp'
+            sh 'ls -lrth *'
           }
         }
       }
