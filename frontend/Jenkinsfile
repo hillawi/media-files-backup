@@ -30,13 +30,13 @@ pipeline {
         script {
           dir('frontend') {
             def remote = [:]
-            remote.name = "node"
+            remote.name = "pi"
             remote.host = "192.168.0.24"
             remote.allowAnyHosts = true
             remote.user = '${SSH_CRED_USR}'
             remote.password = '${SSH_CRED_PSW}'
-            echo "user: ${SSH_CRED_USR}"
-            echo "pwd: ${SSH_CRED_PSW}"
+            ssh 'zip mfb -r dist/mfb-frontend/'
+            sshPut remote: remote, from: 'dist/mfb-frontend/mfb.zip', into: '/tmp'
           }
         }
       }
