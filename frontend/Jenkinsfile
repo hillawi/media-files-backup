@@ -35,7 +35,7 @@ pipeline {
             remote.allowAnyHosts = true
             remote.user = '${SSH_CRED_USR}'
             remote.password = '${SSH_CRED_PSW}'
-            sh 'zip mfb -r dist/mfb-frontend/'
+            zip zipFile: 'mfb.zip', dir:'dist/mfb-frontend'
             sshPut remote: remote, from: 'mfb.zip', into: '/tmp'
           }
         }
