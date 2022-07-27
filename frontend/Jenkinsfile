@@ -35,7 +35,8 @@ pipeline {
             remote.allowAnyHosts = true
             remote.user = '${SSH_CRED_USR}'
             remote.password = '${SSH_CRED_PSW}'
-            archiveArtifacts artifacts: 'dist/mfb-frontend/*'
+            zip zipFile: 'mfb.zip', dir:'dist/mfb-frontend'
+            sh 'ls -lrth dist/'
           }
         }
       }
