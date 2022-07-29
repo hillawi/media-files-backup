@@ -2,8 +2,12 @@
 
 == Installation and Getting Started
 
-=== Start the backend server
+=== Build the project
 ----
 npm install
+----
+
+=== Start the server
+----
 MFB_DEVICES_CONF_PATH=$MFB_CONF_DIR/devices.json node server.js
 ----
