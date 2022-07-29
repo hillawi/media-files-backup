@@ -12,6 +12,8 @@ import {MatSelectModule} from "@angular/material/select";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {CustomHttpInterceptor} from "../interceptor/http-interceptor";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatButtonModule} from "@angular/material/button";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatGridListModule
   ],
   providers: [
     {
