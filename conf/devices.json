@@ -1,7 +1,11 @@
 [
   {
     "id": "6t",
-    "uuid": "TODO",
+    "connectionType": "OTP",
+    "uuid": {
+      "idVendor": "2a70",
+      "idProduct": "f003"
+    },
     "name": "OnePlus 6T",
     "owner": "John Doe",
     "type": "source",
@@ -16,7 +20,11 @@
   },
   {
     "id": "7t",
-    "uuid": "TODO",
+    "connectionType": "OTP",
+    "uuid": {
+      "idVendor": "TODO",
+      "idProduct": "TODO"
+    },
     "name": "OnePlus 7T",
     "owner": "Jane Doe",
     "type": "source",
@@ -31,7 +39,10 @@
   },
   {
     "id": "sanDiskSsd1To",
-    "uuid": "106B-FF6A",
+    "connectionType": "USB",
+    "uuid": {
+      "fs": "106B-FF6A"
+    },
     "name": "SanDisk SSD 1 TO",
     "owner": "John Doe",
     "type": "target",
@@ -39,7 +50,10 @@
   },
   {
     "id": "wdElements1To",
-    "uuid": "C04CADE94CADDA84",
+    "connectionType": "USB",
+    "uuid": {
+      "fs": "C04CADE94CADDA84"
+    },
     "name": "WD Elements SE 1 TO",
     "owner": "John Doe",
     "type": "target",
