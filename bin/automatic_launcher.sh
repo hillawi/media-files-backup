@@ -12,12 +12,17 @@
 # Debug option, comment out if not needed
 #set -x
 
+# Log file
+LOG_FILE="$MFB_HOME/log/automatic_launcher-$(date +"%Y-%m-%d")"
+
+[[ -f $LOG_FILE ]] || touch "$LOG_FILE"
+
 # Error codes
 ERROR_INPUT_PARAM_INVALID=1
 ERROR_UNKNOWN_DEVICE_ID=2
 
 if [[ $# -ne 2 ]]; then
-  echo "The connection type and the device UUID/PRODUCT ID are required"
+  printf "The connection type and the device UUID/PRODUCT ID are required\n" >> "$LOG_FILE"
   exit $ERROR_INPUT_PARAM_INVALID
 fi
 
@@ -35,13 +40,26 @@ if [[ "$DEVICE_CONNECTION_TYPE" == "USB" ]]; then
 elif [[ "$DEVICE_CONNECTION_TYPE" == "OTP" ]]; then
   deviceId=$(echo "$devices" | jq -r --arg DEVICE_UUID "$DEVICE_UUID" '.[] | select(.uuid.idProduct==$DEVICE_UUID) | .id')
 else
-  echo "Unknown device connection type $DEVICE_CONNECTION_TYPE. Known types are USB and OTP."
+  printf "Unknown device connection type %s. Known types are USB and OTP\n" "$DEVICE_CONNECTION_TYPE" >> "$LOG_FILE"
   exit $ERROR_INPUT_PARAM_INVALID
 fi
 
 [[ "$(echo "$deviceId" | awk '{print length}')" -gt 0 ]] || {
-  printf "Cannot find device with UUID %s\n" "$DEVICE_UUID"
+  printf "Cannot find device with UUID %s\n" "$DEVICE_UUID" >> "$LOG_FILE"
   exit $ERROR_UNKNOWN_DEVICE_ID
 }
 
-printf "device id is %s\n" "$deviceId"
+deviceType=$(echo "$devices" | jq -r --arg DEVICE_ID "$deviceId" '.[] | select(.id==$DEVICE_ID) | .type')
+
+if [[ "$deviceType" == "source" ]]; then
+  printf "Detected a source device\n" >> "$LOG_FILE"
+  # Check for target devices
+elif [[ "$deviceType" == "target" ]]; then
+  printf "Detected a target device\n" >> "$LOG_FILE"
+  # Check for source devices
+else
+  printf "Cannot find the device type. Please verify the configuration\n" >> "$LOG_FILE"
+  exit $ERROR_INPUT_PARAM_INVALID
+fi
+
+printf "device id is %s\n" "$deviceId" >> "$LOG_FILE"
