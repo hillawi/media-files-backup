@@ -12,16 +12,6 @@
 # Debug option, comment out if not needed
 #set -x
 
-# Workaround
-export MFB_HOME=/opt/mfb
-export MFB_BIN_DIR=$MFB_HOME/bin
-export MFB_CONF_DIR=$MFB_HOME/conf
-export MFB_DEVICE_DIR=$MFB_HOME/device
-export MFB_SCRIPT_NAME=backup_launcher.sh
-
-# Source the user env variables
-source /home/pi/.bashrc
-
 # Log file
 LOG_FILE="$MFB_HOME/log/automatic_backup_launcher-$(date +"%Y-%m-%d")"
 
