@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################################################################
-# Script Name	: automatic_launcher.sh
+# Script Name	: automatic_backup_launcher.sh
 # Description	: Automatically launch of the backup process
 # Args        : The connection type (USB, OTP,..) and the device
 #               UUID (for USB) or PRODUCT ID (for OTP)
@@ -12,8 +12,18 @@
 # Debug option, comment out if not needed
 #set -x
 
+# Workaround
+export MFB_HOME=/opt/mfb
+export MFB_BIN_DIR=$MFB_HOME/bin
+export MFB_CONF_DIR=$MFB_HOME/conf
+export MFB_DEVICE_DIR=$MFB_HOME/device
+export MFB_SCRIPT_NAME=backup_launcher.sh
+
+# Source the user env variables
+source /home/pi/.bashrc
+
 # Log file
-LOG_FILE="$MFB_HOME/log/automatic_launcher-$(date +"%Y-%m-%d")"
+LOG_FILE="$MFB_HOME/log/automatic_backup_launcher-$(date +"%Y-%m-%d")"
 
 # Work directory
 WORK_DIR="$MFB_HOME/work"
@@ -37,7 +47,7 @@ fi
   mkdir "$WORK_DIR" || exit $ERROR_DIR_NOT_FOUND
 }
 
-[[ -f "$WORK_DIR/mfb_automatic_launcher.pid" ]] && {
+[[ -f "$WORK_DIR/mfb_automatic_backup_launcher.pid" ]] && {
   printf "Another backup process in progress. Exiting\n" >>"$LOG_FILE"
   exit $ERROR_BACKUP_PROCESS_ONGOING
 }
@@ -67,6 +77,10 @@ fi
 
 deviceType=$(echo "$devices" | jq -r --arg DEVICE_ID "$deviceId" '.[] | select(.id==$DEVICE_ID) | .type')
 
+# Wait for the devices to be ready (properly mounted)
+printf "Waiting for the devices to be ready\n" >>"$LOG_FILE"
+sleep 3
+
 printf "device id is %s\n" "$deviceId" >>"$LOG_FILE"
 
 if [[ "$deviceType" == "source" ]]; then
@@ -79,7 +93,7 @@ if [[ "$deviceType" == "source" ]]; then
       break
     }
 
-    printf "%s" "$$" >>"$WORK_DIR/mfb_automatic_launcher.pid"
+    printf "%s" "$$" >>"$WORK_DIR/mfb_automatic_backup_launcher.pid"
 
     p=$(printf '%s\n' "$tmp")
     printf "%s\n" "$p" >>"$LOG_FILE"
@@ -87,14 +101,14 @@ if [[ "$deviceType" == "source" ]]; then
     targetDeviceId=$(cat "$p")
 
     # Backing up images
-    bash "$BIN_DIR/launch_backup.sh" "$deviceId" "$targetDeviceId" IMG &
+    bash "$BIN_DIR/$MFB_SCRIPT_NAME" "$deviceId" "$targetDeviceId" IMG &
     childPid=$!
     wait $childPid
     exitCode=$?
     [[ $exitCode -eq 0 ]] || {
       printf "Backup failed\n" >>"$LOG_FILE"
       rm "$p" 2>/dev/null
-      rm "$WORK_DIR/mfb_automatic_launcher.pid" 2>/dev/null
+      rm "$WORK_DIR/mfb_automatic_backup_launcher.pid" 2>/dev/null
       exit $ERROR_BACKUP_ERROR
     }
 
@@ -110,7 +124,7 @@ elif [[ "$deviceType" == "target" ]]; then
       break
     }
 
-    printf "%s" "$$" >>"$WORK_DIR/mfb_automatic_launcher.pid"
+    printf "%s" "$$" >>"$WORK_DIR/mfb_automatic_backup_launcher.pid"
 
     p=$(printf '%s\n' "$tmp")
     printf "%s\n" "$p" >>"$LOG_FILE"
@@ -118,14 +132,14 @@ elif [[ "$deviceType" == "target" ]]; then
     targetDeviceId=$(cat "$p")
 
     # Backing up images
-    bash "$BIN_DIR/launch_backup.sh" "$targetDeviceId" "$deviceId" IMG &
+    bash "$BIN_DIR/$MFB_SCRIPT_NAME" "$targetDeviceId" "$deviceId" IMG &
     childPid=$!
     wait $childPid
     exitCode=$?
     [[ $exitCode -eq 0 ]] || {
       printf "Backup failed\n" >>"$LOG_FILE"
       rm "$p" 2>/dev/null
-      rm "$WORK_DIR/mfb_automatic_launcher.pid" 2>/dev/null
+      rm "$WORK_DIR/mfb_automatic_backup_launcher.pid" 2>/dev/null
       exit $ERROR_BACKUP_ERROR
     }
 
@@ -136,4 +150,4 @@ else
   exit $ERROR_INPUT_PARAM_INVALID
 fi
 
-rm "$WORK_DIR/mfb_automatic_launcher.pid" 2>/dev/null
+rm "$WORK_DIR/mfb_automatic_backup_launcher.pid" 2>/dev/null

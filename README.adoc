@@ -22,12 +22,12 @@ This is usually the case for digital cameras and phones.
 
 * Add the environment variables (see con/env.conf)
 * Mount the input and output end points (see conf/devices.conf)
-* Run the script (launch_backup.sh) with the following arguments:
+* Run the script (backup_launcher.sh) with the following arguments:
 - The device ID (encoded earlier in conf/devices.conf)
 - The media type (IMG or VID)
 
 ----
-$MFB_BIN_DIR/launch_backup.sh 6t IMG
+$MFB_BIN_DIR/backup_launcher.sh 6t IMG
 ----
 
 === Backup your files automatically
@@ -43,7 +43,7 @@ a source device (type=source) and a target (type=target) devices are connected.
 
   b. For OTP devices
 
-    $MFB_BIN_DIR/launch_backup.sh 6t IMG
+    $MFB_BIN_DIR/_backup_launcher_.sh 6t IMG
 
 === Backup your files using the Frontend
 

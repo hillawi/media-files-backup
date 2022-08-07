@@ -1,3 +1,0 @@
-ACTION=="add", ENV{ID_FS_UUID}=="106B-FF6A", RUN+="/opt/mfb/bin/automatic_launcher.sh USB '%E{ID_FS_UUID}'"
-ACTION=="add", ENV{ID_FS_UUID}=="C04CADE94CADDA84", RUN+="/opt/mfb/bin/automatic_launcher.sh USB '%E{ID_FS_UUID}'"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2a70", ATTR{idProduct}=="f003", MODE="0666", RUN+="/opt/mfb/bin/automatic_launcher.sh OTP '%s{idProduct}'"

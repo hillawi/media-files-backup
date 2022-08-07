@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################################################################
-# Script Name	: launch_backup.sh
+# Script Name	: backup_launcher.sh
 # Description	: Launch the backup process
 # Args        : The source device ID, the target device ID and the
 #               media type (IMG, VID, etc.)
@@ -20,8 +20,11 @@ ERROR_OUTPUT_FOLDER_NOTFOUND=4
 ERROR_BAD_DEVICE_CONF=5
 ERROR_BACKUP_ERROR=6
 
+# Log file
+LOG_FILE="$MFB_HOME/log/backup_launcher-$(date +"%Y-%m-%d")"
+
 if [[ $# -ne 3 ]]; then
-  echo "The source device ID, the target device ID and the media type (IMG or VID) are required"
+  printf "The source device ID, the target device ID and the media type (IMG or VID) are required\n"
   exit $ERROR_INPUT_PARAM_INVALID
 fi
 
