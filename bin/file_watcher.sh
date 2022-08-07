@@ -12,7 +12,7 @@
 LOG_FILE="$MFB_HOME/log/file_watcher-$(date +"%Y-%m-%d")"
 
 # Work directory
-WORK_DIR="$MFB_HOME/work"
+WORK_DIR="$MFB_HOME/udev"
 
 [[ -f $LOG_FILE ]] || touch "$LOG_FILE"
 
