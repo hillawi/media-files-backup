@@ -91,7 +91,7 @@ if [[ "$deviceType" == "source" ]]; then
     targetDeviceId=$(cat "$p")
 
     # Backing up images
-    bash "$BIN_DIR/$MFB_SCRIPT_NAME" "$deviceId" "$targetDeviceId" IMG &
+    bash "$BIN_DIR/$MFB_SCRIPT_NAME" "$deviceId" "$targetDeviceId" IMG >> "$LOG_FILE" &
     childPid=$!
     wait $childPid
     exitCode=$?
@@ -122,7 +122,7 @@ elif [[ "$deviceType" == "target" ]]; then
     targetDeviceId=$(cat "$p")
 
     # Backing up images
-    bash "$BIN_DIR/$MFB_SCRIPT_NAME" "$targetDeviceId" "$deviceId" IMG &
+    bash "$BIN_DIR/$MFB_SCRIPT_NAME" "$targetDeviceId" "$deviceId" IMG >> "$LOG_FILE" &
     childPid=$!
     wait $childPid
     exitCode=$?
