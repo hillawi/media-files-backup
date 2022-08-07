@@ -3,7 +3,7 @@
 ###################################################################
 # Script Name	: file_watcher.sh
 # Description	: Watch files created by the udev rule and call
-#               the automatic launcher
+#               the automatic launcher (requires inotify-tools)
 # Author      : Ahmed Abdeen
 # Last update : 2022/08/07
 ###################################################################
