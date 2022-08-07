@@ -18,5 +18,5 @@ WORK_DIR="$MFB_HOME/udev/"
 
 inotifywait -mq --format '%f' -e create "$WORK_DIR/" | while read -r file; do
   printf "Detected file %s\n" "$file" >> "$LOG_FILE"
-  bash "$MFB_BIN/automatic_backup_launcher.sh ${file:0:3} ${file:4:6}" &
+  bash "$MFB_BIN_DIR/automatic_backup_launcher.sh ${file:0:3} ${file:4:6}" &
 done
