@@ -12,11 +12,11 @@
 LOG_FILE="$MFB_HOME/log/file_watcher-$(date +"%Y-%m-%d")"
 
 # Work directory
-WORK_DIR="$MFB_HOME/udev"
+WORK_DIR="$MFB_HOME/udev/"
 
 [[ -f $LOG_FILE ]] || touch "$LOG_FILE"
 
-inotifywait -mq --format '%w' -e create "$WORK_DIR/" | while read -r file; do
+inotifywait -mq --format '%f' -e create "$WORK_DIR/" | while read -r file; do
   printf "Detected file %s\n" "$file" >> "$LOG_FILE"
   bash "$MFB_BIN/automatic_backup_launcher.sh ${file:0:3} ${file:4:6}" &
 done
