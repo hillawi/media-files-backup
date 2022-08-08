@@ -22,6 +22,31 @@ This is usually the case for digital cameras and phones.
 
 * Add the environment variables (see con/env.conf)
 * Mount the input and output end points (see conf/devices.conf)
+* To avoid backing up the whole media files, it is required to create a file named **latest_IMG** or **latest_VID** containing the starting date under the mount path (see conf/devices.conf)
+- Example, consider the following source and target devices
+
+    {
+        "id": "6t",
+        "type": "source",
+        ...
+        },
+        "targetSubPath": {
+          "img": "OnePlus6T/Pictures",
+          "vid": "OnePlus6T/Videos"
+        }
+    }
+
+    {
+        "id": "sanDiskSsd1To",
+        "type": "target",
+        ...
+        "mountPath": "/opt/mfb/device/sanDiskSsd1To"
+    }
+
+- To back up images dating from January 1st 2022 (inclusive) the following file should be created
+
+    echo "2022-01-01" > /opt/mfb/device/sanDiskSsd1To/OnePlus6T/Pictures/latest_IMG
+
 * Run the script (backup_launcher.sh) with the following arguments:
 - The device ID (encoded earlier in conf/devices.conf)
 - The media type (IMG or VID)
@@ -43,7 +68,22 @@ a source device (type=source) and a target (type=target) devices are connected.
 
   b. For OTP devices
 
-    $MFB_BIN_DIR/_backup_launcher_.sh 6t IMG
+    pi@raspberrypi:/opt/mfb $ udevadm monitor -u
+    monitor will print the received events for:
+    UDEV - the event which udev sends out after rule processing
+    UDEV  [166824.939815] add      /devices/virtual/workqueue/scsi_tmf_0 (workqueue)
+    UDEV  [166825.018701] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.4 (usb)
+    UDEV  [166825.027845] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.4/1-1.4:1.0 (usb)
+
+    pi@raspberrypi:/opt/mfb $ udevadm info -a -p /sys/bus/usb/devices/1-1.4 | grep idProduct
+    ATTR{idProduct}=="f003"
+
+2. Launch file_watcher.sh (uses inotifywait to monitor files creation under $MFB_HOME/udev)
+
+    sudo apt install inotify-tools -y
+    $MFB_HOME/bin/file_watcher.sh
+
+3. Plug in your source and target devices
 
 === Backup your files using the Frontend
 
