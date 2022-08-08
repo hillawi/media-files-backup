@@ -56,17 +56,18 @@ $MFB_BIN_DIR/backup_launcher.sh 6t IMG
 ----
 
 === Backup your files automatically
-This feature uses udev. The idea is to launch the backup process as soon as
-a source device (type=source) and a target (type=target) devices are connected.
+
+This feature uses udev.
+The idea is to launch the backup process as soon as a source device (type=source) and a target (type=target) devices are connected.
 
 1. You need to find your device ID and add it to conf/udev-mfb.rules
-  a. For USB devices
+a. For USB devices
 
     pi@raspberrypi:~ $ udevadm info /dev/sda1 | grep ID_FS_UUID
     E: ID_FS_UUID=9C2A-D57B
     E: ID_FS_UUID_ENC=9C2A-D57B
 
-  b. For OTP devices
+b. For OTP devices
 
     pi@raspberrypi:/opt/mfb $ udevadm monitor -u
     monitor will print the received events for:
@@ -78,18 +79,18 @@ a source device (type=source) and a target (type=target) devices are connected.
     pi@raspberrypi:/opt/mfb $ udevadm info -a -p /sys/bus/usb/devices/1-1.4 | grep idProduct
     ATTR{idProduct}=="f003"
 
-  c. Update conf/99-udev-mfb.rules using your devices IDs
+c. Update conf/99-udev-mfb.rules using your devices IDs
 
-2. Launch file_watcher.sh (uses inotifywait to monitor files creation under $MFB_HOME/udev)
-
-    sudo apt install inotify-tools -y
-    $MFB_BIN_DIR/file_watcher.sh
-
-3. Create the following directories
+2. Create the following directories
 
     mkdir $MFB_HOME/work
     mkdir $MFB_HOME/udev
     mkdir $MFB_HOME/log
+
+3. Launch file_watcher.sh (uses inotifywait to monitor files creation under $MFB_HOME/udev)
+
+    sudo apt install inotify-tools -y
+    $MFB_BIN_DIR/file_watcher.sh
 
 4. Copy conf/99-udev-mfb.rules
 
