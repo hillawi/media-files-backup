@@ -2,6 +2,24 @@
 
 Backup your pictures and videos files in an easy and fast way.
 
+== Supported systems
+
+This tool has been tested under Raspbian and Ubuntu
+
+    pi@raspberrypi:~ $ lsb_release -a
+    No LSB modules are available.
+    Distributor ID:	Raspbian
+    Description:	Raspbian GNU/Linux 10 (buster)
+    Release:	10
+    Codename:	buster
+
+    hillawi@hillawi-ThinkPad-P52:~$ lsb_release -a
+    LSB Version:	core-11.1.0ubuntu4-noarch:printing-11.1.0ubuntu4-noarch:security-11.1.0ubuntu4-noarch
+    Distributor ID:	Ubuntu
+    Description:	Ubuntu 22.04.1 LTS
+    Release:	22.04
+    Codename:	jammy
+
 == General information
 
 The media files (images and videos) should respect the following naming convention:
