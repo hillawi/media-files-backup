@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################################################################
-# Script Name	: launch_backup.sh
+# Script Name	: backup_launcher.sh
 # Description	: Launch the backup process
 # Args        : The source device ID, the target device ID and the
 #               media type (IMG, VID, etc.)
@@ -21,7 +21,7 @@ ERROR_BAD_DEVICE_CONF=5
 ERROR_BACKUP_ERROR=6
 
 if [[ $# -ne 3 ]]; then
-  echo "The source device ID, the target device ID and the media type (IMG or VID) are required"
+  printf "The source device ID, the target device ID and the media type (IMG or VID) are required\n"
   exit $ERROR_INPUT_PARAM_INVALID
 fi
 
@@ -37,9 +37,9 @@ MEDIA_TYPE=$3
 FILE_SUFFIX=""
 
 # Read the devices list from the configuration file
-devices=$(cat "$DEVICES_CONF_FILE");
-sourceDeviceType=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .type');
-targetDeviceType=$(echo "$devices" | jq -r --arg TARGET_DEVICE_ID "$TARGET_DEVICE_ID" '.[] | select(.id==$TARGET_DEVICE_ID) | .type');
+devices=$(cat "$DEVICES_CONF_FILE")
+sourceDeviceType=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .type')
+targetDeviceType=$(echo "$devices" | jq -r --arg TARGET_DEVICE_ID "$TARGET_DEVICE_ID" '.[] | select(.id==$TARGET_DEVICE_ID) | .type')
 
 # Devices validation
 if [[ "$sourceDeviceType" != "source" ]]; then
@@ -57,12 +57,12 @@ sourceDeviceMountPath=""
 
 if [[ "$MEDIA_TYPE" == "IMG" ]]; then
   FILE_SUFFIX="IMG_*.jpg"
-  sourceDeviceMountPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .mountPath.img');
-  sourceDeviceTargetSubPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .targetSubPath.img');
+  sourceDeviceMountPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .mountPath.img')
+  sourceDeviceTargetSubPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .targetSubPath.img')
 elif [[ "$MEDIA_TYPE" == "VID" ]]; then
   FILE_SUFFIX="VID_*.mp4"
-  sourceDeviceMountPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .mountPath.vid');
-  sourceDeviceTargetSubPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .targetSubPath.vid');
+  sourceDeviceMountPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .mountPath.vid')
+  sourceDeviceTargetSubPath=$(echo "$devices" | jq -r --arg SOURCE_DEVICE_ID "$SOURCE_DEVICE_ID" '.[] | select(.id==$SOURCE_DEVICE_ID) | .targetSubPath.vid')
 else
   echo "Unknown media type $MEDIA_TYPE. Known types are IMG and VID."
   exit $ERROR_MEDIA_TYPE_UNKNOWN

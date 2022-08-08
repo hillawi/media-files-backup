@@ -2,7 +2,7 @@
 
 ###################################################################
 # Script Name	: do_backup.sh
-# Description	: Copy the files (called by launch_backup.sh)
+# Description	: Copy the files (called by backup_launcher.sh)
 # Args        : The input and output folders, the files suffix,
 #               the media type and the device ID
 # Author      : Ahmed Abdeen
