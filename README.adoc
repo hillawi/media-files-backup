@@ -78,6 +78,8 @@ a source device (type=source) and a target (type=target) devices are connected.
     pi@raspberrypi:/opt/mfb $ udevadm info -a -p /sys/bus/usb/devices/1-1.4 | grep idProduct
     ATTR{idProduct}=="f003"
 
+  c. Update conf/99-udev-mfb.rules using your devices IDs
+
 2. Launch file_watcher.sh (uses inotifywait to monitor files creation under $MFB_HOME/udev)
 
     sudo apt install inotify-tools -y
@@ -89,7 +91,7 @@ a source device (type=source) and a target (type=target) devices are connected.
     mkdir $MFB_HOME/udev
     mkdir $MFB_HOME/log
 
-4. Update and copy conf/99-udev-mfb.rules
+4. Copy conf/99-udev-mfb.rules
 
     cp conf/99-udev-mfb.rules /etc/udev/rules.d
 
