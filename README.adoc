@@ -81,9 +81,15 @@ a source device (type=source) and a target (type=target) devices are connected.
 2. Launch file_watcher.sh (uses inotifywait to monitor files creation under $MFB_HOME/udev)
 
     sudo apt install inotify-tools -y
-    $MFB_HOME/bin/file_watcher.sh
+    $MFB_BIN_DIR/file_watcher.sh
 
-3. Plug in your source and target devices
+3. Create the following directories
+
+    mkdir $MFB_HOME/work
+    mkdir $MFB_HOME/udev
+    mkdir $MFB_HOME/log
+
+4. Plug in your source and target devices
 
 === Backup your files using the Frontend
 
