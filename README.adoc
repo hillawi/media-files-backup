@@ -89,7 +89,11 @@ a source device (type=source) and a target (type=target) devices are connected.
     mkdir $MFB_HOME/udev
     mkdir $MFB_HOME/log
 
-4. Plug in your source and target devices
+4. Update and copy conf/99-udev-mfb.rules
+
+    cp conf/99-udev-mfb.rules /etc/udev/rules.d
+
+5. Plug in your source and target devices
 
 === Backup your files using the Frontend
 
