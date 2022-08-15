@@ -8,3 +8,8 @@ services:
     volumes:
       - /media:/media
       - /opt/mfb/udev:/opt/mfb/udev
+  mfb-frontend:
+    container_name: mfb-frontend
+    image: hillawi/mfb-frontend:1.0.0
+    ports:
+      - "8383:8383"
