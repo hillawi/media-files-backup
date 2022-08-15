@@ -71,12 +71,6 @@ app.options('/launchBackup', (req, res) => {
     res.sendStatus(200);
 });
 
-function sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
-
 app.post('/launchBackup', async (req, res) => {
     setHeaders(res);
 

@@ -120,7 +120,7 @@ c. Update conf/99-udev-mfb.rules using your devices IDs
 
 ==== Run using Docker
 
-    docker run -idt -v /dev:/dev -v /media:/media -v /opt/mfb/udev:/opt/mfb/udev --privileged --name mfb hillawi/mfb
+    docker-compose up -d
 
 === Backup your files using the Frontend
 
