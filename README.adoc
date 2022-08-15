@@ -38,6 +38,8 @@ This is usually the case for digital cameras and phones.
 
 === Backup your files using the script
 
+==== Run the script manually
+
 * Add the environment variables (see con/env.conf)
 * Mount the input and output end points (see conf/devices.conf)
 * To avoid backing up the whole media files, it is required to create a file named **latest_IMG** or **latest_VID** containing the starting date under the mount path (see conf/devices.conf)
@@ -73,7 +75,7 @@ This is usually the case for digital cameras and phones.
 $MFB_BIN_DIR/backup_launcher.sh 6t IMG
 ----
 
-=== Backup your files automatically
+==== Backup your files automatically
 
 This feature uses udev.
 The idea is to launch the backup process as soon as a source device (type=source) and a target (type=target) devices are connected.
@@ -115,6 +117,10 @@ c. Update conf/99-udev-mfb.rules using your devices IDs
     cp conf/99-udev-mfb.rules /etc/udev/rules.d
 
 5. Plug in your source and target devices
+
+==== Run using Docker
+
+    docker run -idt -v /dev:/dev -v /media:/media -v /opt/mfb/udev:/opt/mfb/udev --privileged --name mfb hillawi/mfb
 
 === Backup your files using the Frontend
 
