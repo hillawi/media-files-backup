@@ -1,0 +1,8 @@
+conf/.bashrc_mfb
+conf/99-udev-mfb.rules
+conf/env.conf
+conf/nginx-mfb.conf
+server/node_modules
+server/*.log
+**/README.adoc
+Dockerfile

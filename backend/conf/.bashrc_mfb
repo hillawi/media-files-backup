@@ -1,6 +1,7 @@
 # Media Backup Files
 export MFB_HOME=/opt/mfb
-export MFB_BIN_DIR=$MFB_HOME/backend/system
-export MFB_CONF_DIR=$MFB_HOME/conf
+export MFB_BACKEND=$MFB_HOME/backend
+export MFB_BIN_DIR=$MFB_BACKEND/system
+export MFB_CONF_DIR=$MFB_BACKEND/conf
 export MFB_DEVICE_DIR=$MFB_HOME/device
 export MFB_SCRIPT_NAME=backup_launcher.sh
