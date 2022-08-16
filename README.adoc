@@ -122,8 +122,8 @@ c. Update conf/99-udev-mfb.rules using your devices IDs
 
 You can optionally build the backend and frontend images
 
-    docker build -t hillawi/mfb-frontend:1.0.0 frontend
-    docker build -t hillawi/mfb-backend1.0.0 backend
+    docker build -t aabdeen/mfb-frontend:1.0.0 frontend
+    docker build -t aabdeen/mfb-backend1.0.0 backend
 
     docker-compose up -d
 
