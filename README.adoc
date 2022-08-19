@@ -13,7 +13,7 @@ This tool has been tested under Raspbian and Ubuntu
     Release:	10
     Codename:	buster
 
-    hillawi@hillawi-ThinkPad-P52:~$ lsb_release -a
+    hillawi@hillawi:~$ lsb_release -a
     LSB Version:	core-11.1.0ubuntu4-noarch:printing-11.1.0ubuntu4-noarch:security-11.1.0ubuntu4-noarch
     Distributor ID:	Ubuntu
     Description:	Ubuntu 22.04.1 LTS
