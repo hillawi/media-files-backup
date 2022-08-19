@@ -120,11 +120,6 @@ c. Update conf/99-udev-mfb.rules using your devices IDs
 
 ==== Run using Docker
 
-You can optionally build the backend and frontend images
-
-    docker build -t aabdeen/mfb-frontend:1.0.0 frontend
-    docker build -t aabdeen/mfb-backend1.0.0 backend
-
     docker-compose up -d
 
 === Backup your files using the Frontend
