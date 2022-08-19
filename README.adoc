@@ -36,6 +36,29 @@ Where:
 This is usually the case for digital cameras and phones.
 
 == Installation and Getting Started
+The easiest way is to use the provided docker compose file:
+
+=== Launch using Docker
+
+    docker-compose up -d
+
+```yaml
+  services:
+  mfb-backend:
+    container_name: mfb-backend
+    privileged: true
+    image: aabdeen/mfb-backend:1.0.0
+    ports:
+      - "8387:8387"
+    volumes:
+      - /media:/media
+      - /opt/mfb/udev:/opt/mfb/udev
+  mfb-frontend:
+    container_name: mfb-frontend
+    image: aabdeen/mfb-frontend:1.0.0
+    ports:
+      - "8383:8383"
+```
 
 === Backup your files using the script
 
@@ -118,10 +141,6 @@ c. Update conf/99-udev-mfb.rules using your devices IDs
     cp conf/99-udev-mfb.rules /etc/udev/rules.d
 
 5. Plug in your source and target devices
-
-==== Run using Docker
-
-    docker-compose up -d
 
 === Backup your files using the Frontend
 
