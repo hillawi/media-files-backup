@@ -1,0 +1,45 @@
+pipeline {
+  agent {
+    label 'docker-agent'
+  }
+
+  tools {
+    nodejs '18.6.0'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        dir('frontend') {
+          sh 'npm install'
+          sh 'npm install @angular/cli --location=global'
+          sh 'ng build'
+        }
+      }
+    }
+    stage('Deploy') {
+      environment {
+        SSH_CRED = credentials('raspberry-pi-key')
+      }
+      when {
+        expression {
+          currentBuild.result == null || currentBuild.result == 'SUCCESS'
+        }
+      }
+      steps {
+        script {
+          dir('frontend') {
+            def remote = [:]
+            remote.name = "pi"
+            remote.host = "192.168.0.24"
+            remote.allowAnyHosts = true
+            remote.user = '${SSH_CRED_USR}'
+            remote.password = '${SSH_CRED_PSW}'
+            zip zipFile: 'mfb.zip', dir:'dist/mfb-frontend'
+            sshPut remote: remote, from: 'mfb.zip', into: '/tmp'
+          }
+        }
+      }
+    }
+  }
+}

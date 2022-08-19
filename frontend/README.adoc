@@ -1,0 +1,31 @@
+= Media Files Backup (MFB) - Frontend
+
+== Installation and Getting Started
+
+=== Build the project
+----
+ng build
+----
+
+=== Deploy to any HTTP server
+
+==== Configuration example for NGINX
+
+Add the following configuration to */etc/nginx/sites-available/mfb.conf*:
+
+----
+server {
+    listen 4200 default_server;
+    listen [::]:4200 default_server;
+
+    root /var/www/mfb/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+            try_files $uri $uri/ =404;
+    }
+}
+----

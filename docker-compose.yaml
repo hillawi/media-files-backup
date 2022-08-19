@@ -1,0 +1,15 @@
+services:
+  mfb-backend:
+    container_name: mfb-backend
+    privileged: true
+    image: aabdeen/mfb-backend:1.0.0
+    ports:
+      - "8387:8387"
+    volumes:
+      - /media:/media
+      - /opt/mfb/udev:/opt/mfb/udev
+  mfb-frontend:
+    container_name: mfb-frontend
+    image: aabdeen/mfb-frontend:1.0.0
+    ports:
+      - "8383:8383"
