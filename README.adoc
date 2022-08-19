@@ -24,13 +24,14 @@ This tool has been tested under Raspbian and Ubuntu
 
 The media files (images and videos) should respect the following naming convention:
 
-* [IMG|VID]_YYYYMMDD.[jpg|mp4]
+* [IMG|VID]_YYYYMMDD[X].[jpg|mp4]
 
 Where:
 
 * *YYYY* the year
 * *DD* the month
 * *MM* the day
+* *X* any other characters
 
 This is usually the case for digital cameras and phones.
 
