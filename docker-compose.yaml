@@ -2,7 +2,7 @@ services:
   mfb-backend:
     container_name: mfb-backend
     privileged: true
-    image: aabdeen/mfb-backend:1.0.0
+    image: aabdeen/mfb-backend:1.0.1
     ports:
       - "8387:8387"
     volumes:
