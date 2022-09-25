@@ -10,7 +10,7 @@ ENV MFB_DEVICE_DIR=$MFB_HOME/device
 ENV MFB_SCRIPT_NAME=backup_launcher.sh
 ENV MFB_DEVICES_CONF_PATH=$MFB_CONF_DIR/devices.json
 
-RUN apt-get update && apt-get install -y inotify-tools
+#RUN apt-get update && apt-get install -y inotify-tools
 
 RUN mkdir $MFB_HOME
 RUN mkdir $MFB_HOME/backend
