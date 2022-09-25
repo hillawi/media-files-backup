@@ -1,5 +1,24 @@
 [
   {
+    "id": "mate10Pro",
+    "connectionType": "OTP",
+    "uuid": {
+      "idVendor": "",
+      "idProduct": ""
+    },
+    "name": "Huawei Mate 10 Pro",
+    "owner": "John Doe",
+    "type": "source",
+    "mountPath": {
+      "img": "/opt/mfb/device/mate10Pro/img",
+      "vid": "/opt/mfb/device/mate10Pro/vid"
+    },
+    "targetSubPath": {
+      "img": "Mate10Pro/Pictures",
+      "vid": "Mate10Pro/Videos"
+    }
+  },
+  {
     "id": "6t",
     "connectionType": "OTP",
     "uuid": {
@@ -38,7 +57,7 @@
     }
   },
   {
-    "id": "sanDiskSsd1To",
+    "id": "sanDiskSsd1TB",
     "connectionType": "USB",
     "uuid": {
       "fs": "106B-FF6A"
@@ -46,10 +65,10 @@
     "name": "SanDisk SSD 1 TO",
     "owner": "John Doe",
     "type": "target",
-    "mountPath": "/opt/mfb/device/sanDiskSsd1To"
+    "mountPath": "/opt/mfb/device/sanDiskSsd"
   },
   {
-    "id": "wdElements1To",
+    "id": "wdElements1TB",
     "connectionType": "USB",
     "uuid": {
       "fs": "C04CADE94CADDA84"
@@ -57,6 +76,17 @@
     "name": "WD Elements SE 1 TO",
     "owner": "John Doe",
     "type": "target",
-    "mountPath": "/opt/mfb/device/wdElements1To"
+    "mountPath": "/opt/mfb/device/wdElements"
+  },
+  {
+    "id": "wdMyPassport256GB",
+    "connectionType": "USB",
+    "uuid": {
+      "fs": "58EF-06BD"
+    },
+    "name": "WD MyPassport 56GB",
+    "owner": "John Doe",
+    "type": "target",
+    "mountPath": "/opt/mfb/device/wdMyPassport"
   }
 ]
