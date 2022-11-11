@@ -65,7 +65,7 @@
     "name": "SanDisk SSD 1 TO",
     "owner": "John Doe",
     "type": "target",
-    "mountPath": "/opt/mfb/device/sanDiskSsd"
+    "mountPath": "/opt/mfb/device/sanDiskSsd1TB"
   },
   {
     "id": "wdElements1TB",
@@ -76,7 +76,7 @@
     "name": "WD Elements SE 1 TO",
     "owner": "John Doe",
     "type": "target",
-    "mountPath": "/opt/mfb/device/wdElements"
+    "mountPath": "/opt/mfb/device/wdElements1TB"
   },
   {
     "id": "wdMyPassport256GB",
@@ -87,6 +87,6 @@
     "name": "WD MyPassport 56GB",
     "owner": "John Doe",
     "type": "target",
-    "mountPath": "/opt/mfb/device/wdMyPassport"
+    "mountPath": "/opt/mfb/device/wdMyPassport256GB"
   }
 ]

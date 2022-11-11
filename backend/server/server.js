@@ -74,8 +74,6 @@ app.options('/launchBackup', (req, res) => {
 app.post('/launchBackup', async (req, res) => {
     setHeaders(res);
 
-    //await sleep(5000);
-
     await launchBackup(req, res);
 });
 
