@@ -53,7 +53,6 @@ if [[ "$targetDeviceType" != "target" ]]; then
 fi
 
 sourceDeviceMountPath=""
-# TODO add the target device mount path to the source devices subPaths
 
 if [[ "$MEDIA_TYPE" == "IMG" ]]; then
   FILE_SUFFIX="IMG_*.jpg"
