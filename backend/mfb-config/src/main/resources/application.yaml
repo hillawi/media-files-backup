@@ -1,0 +1,36 @@
+spring:
+  config:
+    activate:
+      on-profile: basic
+server:
+  port: 8387
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: offline
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://${MFB_CONF_DIR}
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: online
+  cloud:
+    config:
+      server:
+        git:
+          uri: <TODO>
+          ignore-local-ssh-settings: true
+          force-pull: true
+          host-key: <TODO>
+          host-key-algorithm: ssh-rsa
+          passphrase: <TODO>
+          private-key: "<TODO>"
