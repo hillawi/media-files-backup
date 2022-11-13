@@ -1,6 +1,10 @@
 package org.hillawi.apps.mfb.rest.config;
 
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -28,6 +32,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders(corsAllowedHeaders)
                 .allowCredentials(true)
                 .maxAge(5000L);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     }
 
 }

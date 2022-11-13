@@ -1,10 +1,11 @@
 package org.hillawi.apps.mfb.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
-import org.hillawi.apps.mfb.rest.service.DeviceService;
+import org.hillawi.apps.mfb.rest.dto.BackupDto;
+import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BackupController {
 
-    private DeviceService deviceService;
+    private final BackupService backupService;
 
-    @PostMapping(value = "/launchBackup", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String launchBackup(DeviceMediaType mediaType, String sourceDeviceId, String targetDeviceId) {
-        var sourceDevice = deviceService.findById(sourceDeviceId);
-        var targetDevice = deviceService.findById(targetDeviceId);
-        return "OK";
+    @PostMapping(value = "/launchBackup",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void launchBackup(@RequestBody BackupDto backupDto) {
+        backupService.execute(backupDto.sourceDeviceId(), backupDto.targetDeviceId(), backupDto.mediaType());
     }
 
 }
