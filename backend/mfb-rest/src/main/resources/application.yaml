@@ -1,0 +1,5 @@
+spring:
+  config:
+    import: "configserver:http://localhost:8787"
+  application:
+    name: mfb-rest
