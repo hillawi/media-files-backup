@@ -53,11 +53,16 @@
       </button>
     </div>
   </form>
-  <!-- Terminal -->
-  <div class="terminal"
-       [ngClass]="successfulRequest === true ? 'success' : successfulRequest === null ? '' : 'failure'">
-    <pre [innerHTML]="responseMessage"></pre>
+
+  <div *ngIf="successfulRequest === true" class="success">
+    Backup successful
   </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let processedFile of processedFiles">
+      {{processedFile}}
+    </mat-list-item>
+  </mat-list>
 
   <!-- Footer -->
   <footer>

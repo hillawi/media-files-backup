@@ -18,8 +18,9 @@ interface MediaType {
 }
 
 class ResponseMessage {
-  output: string = '';
-  error: string = '';
+  processedFiles: string[] = [];
+  latestUpdateDate: string[] = [];
+  erroredFiles: string[] = [];
 }
 
 @Component({
@@ -39,6 +40,9 @@ export class AppComponent implements OnInit {
 
   successfulRequest: boolean | null = null;
   responseMessage = {};
+  processedFiles: string[] = [];
+  latestUpdateDate: string[] = [];
+  erroredFiles: string[] = [];
 
   sourceDeviceControl = new FormControl<Device | null>(null, Validators.required);
   targetDeviceControl = new FormControl<Device | null>(null, Validators.required);
@@ -75,7 +79,9 @@ export class AppComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.successfulRequest = true;
-          this.responseMessage = data.output;
+          this.processedFiles = data.processedFiles;
+          this.erroredFiles = data.erroredFiles;
+          this.latestUpdateDate = data.latestUpdateDate;
         }, error: (error) => {
           console.log("error:", error)
           this.successfulRequest = false;
