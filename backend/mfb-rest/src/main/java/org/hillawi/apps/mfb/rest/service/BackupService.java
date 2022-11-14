@@ -1,5 +1,6 @@
 package org.hillawi.apps.mfb.rest.service;
 
+import org.hillawi.apps.mfb.rest.domain.BackupReport;
 import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
 
 /**
@@ -8,6 +9,6 @@ import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
  */
 public interface BackupService {
 
-    void execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType);
+    BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType);
 
 }

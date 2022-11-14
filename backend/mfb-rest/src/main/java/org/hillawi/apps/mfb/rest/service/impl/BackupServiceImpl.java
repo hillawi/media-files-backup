@@ -3,6 +3,7 @@ package org.hillawi.apps.mfb.rest.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hillawi.apps.mfb.rest.domain.BackupReport;
 import org.hillawi.apps.mfb.rest.domain.Device;
 import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
 import org.hillawi.apps.mfb.rest.domain.exception.BackupException;
@@ -18,10 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -44,7 +42,7 @@ public class BackupServiceImpl implements BackupService {
     private final DeviceService deviceService;
 
     @Override
-    public void execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType) {
+    public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType) {
         var sourceDevice = deviceService.findById(sourceDeviceId);
         var targetDevice = deviceService.findById(targetDeviceId);
 
@@ -57,7 +55,11 @@ public class BackupServiceImpl implements BackupService {
 
         var processedFiles = doBackup(targetSubPath, filesPaths, latestUpdateDate);
 
-        updateLatestUpdateFile(processedFiles.get(processedFiles.size() - 1), sourceDeviceId, deviceMediaType, targetSubPath);
+        var latestBackupDate = extractDate(processedFiles.get(processedFiles.size() - 1));
+
+        updateLatestUpdateFile(latestBackupDate, sourceDeviceId, deviceMediaType, targetSubPath);
+
+        return new BackupReport(processedFiles, latestBackupDate, Collections.emptyList());
     }
 
     @SneakyThrows
@@ -117,10 +119,10 @@ public class BackupServiceImpl implements BackupService {
         return processedFiles;
     }
 
-    private void updateLatestUpdateFile(String latestProcessedFile, String sourceDeviceId, DeviceMediaType deviceMediaType, Path targetSubPath) {
+    private void updateLatestUpdateFile(String latestBackupDate, String sourceDeviceId, DeviceMediaType deviceMediaType, Path targetSubPath) {
         var latestUpdateFileName = buildLatestUpdateFileName(sourceDeviceId, deviceMediaType);
         try {
-            Files.writeString(targetSubPath.resolve(latestUpdateFileName), extractDate(latestProcessedFile), StandardOpenOption.TRUNCATE_EXISTING);
+            Files.writeString(targetSubPath.resolve(latestUpdateFileName), latestBackupDate, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             throw new BackupException("Cannot update the most recent updated file " + latestUpdateFileName, e);
         }
