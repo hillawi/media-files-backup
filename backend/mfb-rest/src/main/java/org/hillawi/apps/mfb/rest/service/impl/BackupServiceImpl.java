@@ -9,6 +9,7 @@ import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
 import org.hillawi.apps.mfb.rest.domain.exception.BackupException;
 import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.hillawi.apps.mfb.rest.service.DeviceService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Profile("!dummy")
 public class BackupServiceImpl implements BackupService {
 
     private static final EnumMap<DeviceMediaType, String> PATTERNS_PER_MEDIA_TYPE = new EnumMap<>(DeviceMediaType.class);

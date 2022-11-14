@@ -24,7 +24,8 @@ public class BackupController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public BackupReportDto launchBackup(@RequestBody BackupDto backupDto) {
-        BackupReport backupReport = backupService.execute(backupDto.sourceDeviceId(), backupDto.targetDeviceId(), backupDto.mediaType());
+        BackupReport backupReport = backupService
+                .execute(backupDto.sourceDeviceId(), backupDto.targetDeviceId(), backupDto.mediaType());
         return new BackupReportDto(backupReport.processedFiles(), backupReport.latestUpdateDate(), backupReport.erroredFiles());
     }
 
