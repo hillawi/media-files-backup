@@ -1,0 +1,75 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 8px 0;
+}
+
+.spinner {
+  margin: 5px;
+}
+
+.source-target-arrow {
+  margin-top: 22px;
+  margin-right: 10px;
+}
+
+.mat-form-field {
+  margin-right: 10px;
+}
+
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #343e4d;
+  color: white;
+  font-weight: 600;
+}
+
+.toolbar img {
+  margin: 0 16px;
+}
+
+.content {
+  display: flex;
+  margin: 82px auto 32px;
+  padding: 0 16px;
+  max-width: 960px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+a,
+a:visited,
+a:hover {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #125699;
+}
+
+.success {
+  background: rgb(75, 73, 73);
+  color: #398006;
+}
+
+.failure {
+  background: rgb(75, 73, 73);
+  color: #721212;
+}

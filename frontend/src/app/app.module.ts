@@ -15,10 +15,17 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatListModule} from "@angular/material/list";
+import {MatTableModule} from "@angular/material/table";
+import { FilesDetailsComponent } from './files-details/files-details.component';
+import { HomeComponent } from './home/home.component';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FilesDetailsComponent,
+    HomeComponent,
+    ReportComponent
   ],
     imports: [
         BrowserModule,
@@ -34,7 +41,8 @@ import {MatListModule} from "@angular/material/list";
         MatProgressSpinnerModule,
         MatButtonModule,
         MatGridListModule,
-        MatListModule
+        MatListModule,
+        MatTableModule
     ],
   providers: [
     {
