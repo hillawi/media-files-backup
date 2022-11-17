@@ -23,3 +23,12 @@
   flex-direction: column;
   align-items: center;
 }
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-toolbar {
+  color: white;
+  background: darkgreen;
+}

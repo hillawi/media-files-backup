@@ -19,13 +19,16 @@ import {MatTableModule} from "@angular/material/table";
 import { FilesDetailsComponent } from './files-details/files-details.component';
 import { HomeComponent } from './home/home.component';
 import { ReportComponent } from './report/report.component';
+import { ErrorComponent } from './error/error.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [
     AppComponent,
     FilesDetailsComponent,
     HomeComponent,
-    ReportComponent
+    ReportComponent,
+    ErrorComponent
   ],
     imports: [
         BrowserModule,
@@ -42,7 +45,8 @@ import { ReportComponent } from './report/report.component';
         MatButtonModule,
         MatGridListModule,
         MatListModule,
-        MatTableModule
+        MatTableModule,
+        MatToolbarModule
     ],
   providers: [
     {
