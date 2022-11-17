@@ -52,6 +52,10 @@ export class HomeComponent implements OnInit {
   processedFiles: MediaDetails[] = [];
   erroredFiles: MediaDetails[] = [];
 
+  reportReady: boolean = false;
+
+  displayedColumns: string[] = ['name', 'size'];
+
   sourceDeviceControl = new FormControl<Device | null>(null, Validators.required);
   targetDeviceControl = new FormControl<Device | null>(null, Validators.required);
   mediaTypeControl = new FormControl<MediaType | null>(null, Validators.required);
@@ -89,9 +93,11 @@ export class HomeComponent implements OnInit {
           this.successfulRequest = true;
           this.processedFiles = data.processedFiles;
           this.erroredFiles = data.erroredFiles;
+          this.reportReady = true;
         }, error: (error) => {
           console.log("error:", error)
           this.successfulRequest = false;
+          this.reportReady = false;
         }
       });
   }
@@ -100,4 +106,7 @@ export class HomeComponent implements OnInit {
     return this.spinnerService.visibility;
   }
 
+  onNewBackupClick() {
+    this.reportReady = false;
+  }
 }

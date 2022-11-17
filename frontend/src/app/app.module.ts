@@ -16,10 +16,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatListModule} from "@angular/material/list";
 import {MatTableModule} from "@angular/material/table";
-import { FilesDetailsComponent } from './files-details/files-details.component';
-import { HomeComponent } from './home/home.component';
-import { ReportComponent } from './report/report.component';
-import { ErrorComponent } from './error/error.component';
+import {FilesDetailsComponent} from './files-details/files-details.component';
+import {HomeComponent} from './home/home.component';
+import {ErrorComponent} from './error/error.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
@@ -27,27 +26,26 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     AppComponent,
     FilesDetailsComponent,
     HomeComponent,
-    ReportComponent,
     ErrorComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        MatButtonModule,
-        MatGridListModule,
-        MatListModule,
-        MatTableModule,
-        MatToolbarModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatGridListModule,
+    MatListModule,
+    MatTableModule,
+    MatToolbarModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
