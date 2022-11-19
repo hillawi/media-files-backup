@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {SpinnerService} from "../../service/spinner-service";
-import {ToastrService} from "ngx-toastr";
+import {SpinnerService} from "../../service/spinner.service";
+import {NotificationService} from "../../service/notification.service";
 
 interface Device {
   id: string;
@@ -66,7 +66,8 @@ export class HomeComponent implements OnInit {
     mediaType: this.mediaTypeControl
   });
 
-  constructor(private http: HttpClient, private spinnerService: SpinnerService, private toastr: ToastrService) {
+  constructor(private http: HttpClient, private spinnerService: SpinnerService,
+              private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -81,8 +82,7 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit(): void {
-    //this.toastr.success('Hello world!', 'Toastr fun!');
-/*    const body = {
+    const body = {
       mediaType: this.backupForm.value.mediaType?.id,
       sourceDeviceId: this.backupForm.value.sourceDevice?.id,
       targetDeviceId: this.backupForm.value.targetDevice?.id
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
           this.successfulRequest = false;
           this.reportReady = false;
         }
-      });*/
+      });
   }
 
   showSpinner() {

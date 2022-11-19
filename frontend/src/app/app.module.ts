@@ -20,6 +20,7 @@ import {FilesDetailsComponent} from './files-details/files-details.component';
 import {HomeComponent} from './home/home.component';
 import {ErrorComponent} from './error/error.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     MatGridListModule,
     MatListModule,
     MatTableModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSnackBarModule
   ],
   providers: [
     {
