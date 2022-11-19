@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hillawi.apps.mfb.rest.domain.BackupReport;
 import org.hillawi.apps.mfb.rest.domain.Device;
 import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
+import org.hillawi.apps.mfb.rest.domain.MediaFileDetails;
 import org.hillawi.apps.mfb.rest.domain.exception.BackupException;
 import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.hillawi.apps.mfb.rest.service.DeviceService;
@@ -57,7 +58,7 @@ public class BackupServiceImpl implements BackupService {
 
         var processedFiles = doBackup(targetSubPath, filesPaths, latestUpdateDate);
 
-        var latestBackupDate = extractDate(processedFiles.get(processedFiles.size() - 1));
+        var latestBackupDate = extractDate(processedFiles.get(processedFiles.size() - 1).name());
 
         updateLatestUpdateFile(latestBackupDate, sourceDeviceId, deviceMediaType, targetSubPath);
 
@@ -77,7 +78,13 @@ public class BackupServiceImpl implements BackupService {
                 return FileVisitResult.CONTINUE;
             }
         };
-        Files.walkFileTree(rootDir, Set.of(FileVisitOption.FOLLOW_LINKS), 1, matcherVisitor);
+
+        try {
+            Files.walkFileTree(rootDir, Set.of(FileVisitOption.FOLLOW_LINKS), 1, matcherVisitor);
+        } catch (IOException e) {
+            log.error("Can't read the source files", e);
+            throw new RuntimeException("Source device not readable");
+        }
         return matchesList;
     }
 
@@ -96,8 +103,8 @@ public class BackupServiceImpl implements BackupService {
         }
     }
 
-    private ArrayList<String> doBackup(Path targetPath, List<Path> filePaths, LocalDateTime dateTime) {
-        var processedFiles = new ArrayList<String>();
+    private ArrayList<MediaFileDetails> doBackup(Path targetPath, List<Path> filePaths, LocalDateTime dateTime) {
+        var processedFiles = new ArrayList<MediaFileDetails>();
         filePaths.stream()
                 .filter(p -> {
                     try {
@@ -113,7 +120,8 @@ public class BackupServiceImpl implements BackupService {
                         var fileName = p.getFileName();
                         var dirName = createDirectoryIfNotExists(fileName, targetPath);
                         Files.copy(p, targetPath.resolve(dirName).resolve(fileName), REPLACE_EXISTING);
-                        processedFiles.add(fileName.toString());
+
+                        processedFiles.add(new MediaFileDetails(fileName.toString(), Files.size(p)));
                     } catch (IOException e) {
                         log.error("Cannot copy file at {}", p, e);
                     }

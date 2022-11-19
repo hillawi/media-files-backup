@@ -3,12 +3,15 @@ package org.hillawi.apps.mfb.rest.config;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.zalando.problem.jackson.ProblemModule;
+import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
 /**
  * @author Ahmed Hillawi
@@ -36,9 +39,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper()
+        return JsonMapper.builder()
                 .enable(SerializationFeature.INDENT_OUTPUT)
-                .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+                .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+                .build()
+                .registerModules(new ProblemModule(), new ConstraintViolationProblemModule());
     }
 
 }
