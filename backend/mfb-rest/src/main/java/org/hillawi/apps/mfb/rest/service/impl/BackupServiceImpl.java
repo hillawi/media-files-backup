@@ -12,6 +12,9 @@ import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.hillawi.apps.mfb.rest.service.DeviceService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -58,6 +61,13 @@ public class BackupServiceImpl implements BackupService {
 
         var processedFiles = doBackup(targetSubPath, filesPaths, latestUpdateDate);
 
+        if (CollectionUtils.isEmpty(processedFiles)) {
+            throw Problem.builder()
+                    .withStatus(Status.BAD_REQUEST)
+                    .withDetail("Nothing to backup")
+                    .build();
+        }
+
         var latestBackupDate = extractDate(processedFiles.get(processedFiles.size() - 1).name());
 
         updateLatestUpdateFile(latestBackupDate, sourceDeviceId, deviceMediaType, targetSubPath);
@@ -99,7 +109,7 @@ public class BackupServiceImpl implements BackupService {
             /*log.error("Cannot find the latest update file. Backing up all the files.");
             latestUpdateDate = LocalDateTime.of(1983, 7, 11, 0, 0);*/
             log.error("Cannot find the latest update file. Aborting.");
-            throw new BackupException("Cannot find the latest update file");
+            throw new BackupException("Cannot find the latest update file. Make sure the source device is connected");
         }
     }
 
