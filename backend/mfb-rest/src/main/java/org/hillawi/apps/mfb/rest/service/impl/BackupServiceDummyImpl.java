@@ -1,5 +1,6 @@
 package org.hillawi.apps.mfb.rest.service.impl;
 
+import lombok.SneakyThrows;
 import org.hillawi.apps.mfb.rest.domain.BackupReport;
 import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
 import org.hillawi.apps.mfb.rest.domain.MediaFileDetails;
@@ -17,8 +18,10 @@ import java.util.List;
 @Profile("dummy")
 public class BackupServiceDummyImpl implements BackupService {
 
+    @SneakyThrows
     @Override
     public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType) {
+        Thread.sleep(5000L);
         return new BackupReport(
                 List.of(new MediaFileDetails("20221111.jpg", 10),
                         new MediaFileDetails("20221115.jpg", 20),
