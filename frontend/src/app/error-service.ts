@@ -23,7 +23,7 @@ export class ErrorService {
           errorMsg = `${errorResponse.status}: Not found`;
           break;
         case 500:
-          errorMsg = `${errorResponse.status}: Internal server error`;
+          errorMsg = `${errorResponse.error.detail}`;
           break;
         case 503:
           errorMsg = `${errorResponse.status}: The request service is not available`;
@@ -32,6 +32,6 @@ export class ErrorService {
           errorMsg = 'Something went wrong';
       }
     }
-    this.notificationService.notify(errorMsg, 'Error');
+    this.notificationService.notify(errorMsg, `${errorResponse.status}`);
   }
 }

@@ -4,7 +4,7 @@
       <div class="card-container">
         <mat-form-field appearance="outline">
           <mat-label>Media Type</mat-label>
-          <mat-select required formControlName="mediaType">
+          <mat-select required formControlName="mediaType" [disabled]="processing">
             <mat-option *ngFor="let mediaType of mediaTypes" [value]="mediaType">
               {{mediaType.name}}
             </mat-option>
@@ -15,7 +15,7 @@
       <div class="card-container">
         <mat-form-field appearance="outline">
           <mat-label>Source Device</mat-label>
-          <mat-select required formControlName="sourceDevice">
+          <mat-select required formControlName="sourceDevice" [disabled]="processing">
             <mat-option *ngFor="let sourceDevice of sourceDevices" [value]="sourceDevice">
               {{sourceDevice.name}}
             </mat-option>
@@ -27,7 +27,7 @@
         </div>
         <mat-form-field appearance="outline">
           <mat-label>Target Device</mat-label>
-          <mat-select required formControlName="targetDevice">
+          <mat-select required formControlName="targetDevice" [disabled]="processing">
             <mat-option *ngFor="let targetDevice of targetDevices" [value]="targetDevice">
               {{targetDevice.name}}
             </mat-option>
@@ -37,15 +37,18 @@
       </div>
 
       <div class="card-container">
-        <mat-spinner [diameter]="20" *ngIf="showSpinner() | async" class="spinner"></mat-spinner>
-        <button mat-raised-button type="submit" [disabled]="backupForm.invalid || backupForm.pending">
+        <button mat-raised-button type="submit" [disabled]="backupForm.invalid || processing">
           Launch Backup
         </button>
+      </div>
+
+      <div class="card-container">
+        <mat-spinner [diameter]="20" *ngIf="showSpinner() | async" class="spinner"></mat-spinner>
       </div>
     </form>
   </div>
   <ng-template #report>
-    <h3>Backup Report</h3>
+    <h3 style="text-align: center">Backup Report</h3>
     <div>
       <app-files-details [title]="'Successful'" [files]="processedFiles"
                          [displayedColumns]="displayedColumns"></app-files-details>

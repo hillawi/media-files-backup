@@ -3,7 +3,6 @@ import {environment} from "../../environments/environment";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {SpinnerService} from "../../service/spinner.service";
-import {NotificationService} from "../../service/notification.service";
 
 interface Device {
   id: string;
@@ -54,6 +53,7 @@ export class HomeComponent implements OnInit {
   erroredFiles: MediaDetails[] = [];
 
   reportReady: boolean = false;
+  processing: boolean = false;
 
   displayedColumns: string[] = ['name', 'size'];
 
@@ -66,8 +66,7 @@ export class HomeComponent implements OnInit {
     mediaType: this.mediaTypeControl
   });
 
-  constructor(private http: HttpClient, private spinnerService: SpinnerService,
-              private notificationService: NotificationService) {
+  constructor(private http: HttpClient, private spinnerService: SpinnerService) {
   }
 
   ngOnInit() {
@@ -79,6 +78,12 @@ export class HomeComponent implements OnInit {
       this.sourceDevices = res.filter(device => device.type === 'source');
       this.targetDevices = res.filter(device => device.type === 'target');
     });
+
+    // TODO re check
+    this.mediaTypeControl.setValue(this.mediaTypes[0])
+    this.sourceDeviceControl.setValue(this.sourceDevices[0]);
+    this.targetDeviceControl.setValue(this.targetDevices[0]);
+    //this.backupForm.updateValueAndValidity({onlySelf: false, emitEvent: true});
   }
 
   onSubmit(): void {
@@ -89,6 +94,8 @@ export class HomeComponent implements OnInit {
     };
     const options = {};
 
+    this.processing = true;
+
     this.http.post<ResponseMessage>(this.apiBaseUrl + '/launchBackup', body, options)
       .subscribe({
         next: (data) => {
@@ -96,10 +103,11 @@ export class HomeComponent implements OnInit {
           this.processedFiles = data.processedFiles;
           this.erroredFiles = data.erroredFiles;
           this.reportReady = true;
-        }, error: (error) => {
-          console.log("error:", error)
+        }, error: () => {
           this.successfulRequest = false;
           this.reportReady = false;
+        }, complete: () => {
+          this.processing = false;
         }
       });
   }

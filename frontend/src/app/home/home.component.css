@@ -21,7 +21,6 @@ h6 {
 }
 
 .content {
-  display: flex;
   margin: 82px auto 32px;
   padding: 0 16px;
   max-width: 960px;
@@ -34,6 +33,7 @@ h6 {
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 16px;
+  width: 100%;
 }
 
 a,
