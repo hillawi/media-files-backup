@@ -103,10 +103,10 @@ export class HomeComponent implements OnInit {
           this.processedFiles = data.processedFiles;
           this.erroredFiles = data.erroredFiles;
           this.reportReady = true;
+          this.processing = false;
         }, error: () => {
           this.successfulRequest = false;
           this.reportReady = false;
-        }, complete: () => {
           this.processing = false;
         }
       });
