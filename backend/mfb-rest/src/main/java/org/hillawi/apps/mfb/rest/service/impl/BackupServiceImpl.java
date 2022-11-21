@@ -131,7 +131,7 @@ public class BackupServiceImpl implements BackupService {
                         var dirName = createDirectoryIfNotExists(fileName, targetPath);
                         Files.copy(p, targetPath.resolve(dirName).resolve(fileName), REPLACE_EXISTING);
 
-                        processedFiles.add(new MediaFileDetails(fileName.toString(), Files.size(p)));
+                        processedFiles.add(new MediaFileDetails(fileName.toString(), Files.size(p) / 1024));
                     } catch (IOException e) {
                         log.error("Cannot copy file at {}", p, e);
                     }
