@@ -37,6 +37,9 @@ frontend/.angular/cache
 testem.log
 /typings
 
+# Log files
+*.log
+
 # System files
 .DS_Store
 Thumbs.db
