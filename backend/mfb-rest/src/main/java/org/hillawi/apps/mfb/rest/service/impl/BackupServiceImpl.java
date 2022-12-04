@@ -168,7 +168,7 @@ public class BackupServiceImpl implements BackupService {
 
     private String extractDate(String latestProcessedFile) {
         var date = latestProcessedFile.substring(4).substring(0, 8);
-        return date.substring(0, 4) + "-" + date.substring(5, 7) + "-" + date.substring(6, 8);
+        return date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
     }
 
     private static String determineSubPath(Device sourceDevice, DeviceMediaType deviceMediaType) {
