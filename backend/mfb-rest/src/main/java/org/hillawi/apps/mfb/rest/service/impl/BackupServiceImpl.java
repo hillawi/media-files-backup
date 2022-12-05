@@ -39,6 +39,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class BackupServiceImpl implements BackupService {
 
     private static final EnumMap<DeviceMediaType, String> PATTERNS_PER_MEDIA_TYPE = new EnumMap<>(DeviceMediaType.class);
+    public static final LocalTime MIDNIGHT = LocalTime.of(0, 0);
 
     static {
         PATTERNS_PER_MEDIA_TYPE.put(DeviceMediaType.IMG, "IMG_*.{jpg,jpeg,JPG,JPEG}");
@@ -48,13 +49,17 @@ public class BackupServiceImpl implements BackupService {
     private final DeviceService deviceService;
 
     @Override
-    public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType) {
+    public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType,
+                                LocalDate startDate, LocalDate endDate) {
         var sourceDevice = deviceService.findById(sourceDeviceId);
         var targetDevice = deviceService.findById(targetDeviceId);
 
         var targetSubPath = Paths.get(targetDevice.mountPath(), determineSubPath(sourceDevice, deviceMediaType));
 
-        var latestUpdateDate = findLatestUpdateDate(sourceDeviceId, deviceMediaType, targetSubPath);
+        var latestUpdateDate = startDate != null ? LocalDateTime.of(startDate, MIDNIGHT) :
+                findLatestUpdateDate(sourceDeviceId, deviceMediaType, targetSubPath);
+
+        // TODO Use end date
 
         var filesPaths = findFiles(Paths.get(sourceDevice.mountPath() + deviceMediaType.name().toLowerCase()),
                 "glob:" + PATTERNS_PER_MEDIA_TYPE.get(deviceMediaType));
@@ -103,11 +108,8 @@ public class BackupServiceImpl implements BackupService {
             var latestUpdateFileName = buildLatestUpdateFileName(sourceDeviceId, deviceMediaType);
             var lines = Files.readAllLines(targetSubPath.resolve(latestUpdateFileName));
             // This filed should have only one line
-            return LocalDateTime.of(LocalDate.parse(lines.get(0)), LocalTime.of(0, 0));
+            return LocalDateTime.of(LocalDate.parse(lines.get(0)), MIDNIGHT);
         } catch (IOException e) {
-            // TODO Add a configuration to enable / disable backing all the files when no date is specified
-            /*log.error("Cannot find the latest update file. Backing up all the files.");
-            latestUpdateDate = LocalDateTime.of(1983, 7, 11, 0, 0);*/
             log.error("Cannot find the latest update file. Aborting.");
             throw new BackupException("Cannot find the latest update file. Make sure the source device is connected");
         }

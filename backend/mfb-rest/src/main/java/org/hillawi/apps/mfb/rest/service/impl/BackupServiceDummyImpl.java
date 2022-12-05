@@ -8,6 +8,7 @@ import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class BackupServiceDummyImpl implements BackupService {
 
     @SneakyThrows
     @Override
-    public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType) {
+    public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType, LocalDate startDate, LocalDate endDate) {
         Thread.sleep(5000L);
         return new BackupReport(
                 List.of(new MediaFileDetails("20221111.jpg", 10),
