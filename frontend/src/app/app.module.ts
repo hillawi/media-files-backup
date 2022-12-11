@@ -22,6 +22,7 @@ import {ErrorComponent} from './error/error.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
     MatTableModule,
     MatToolbarModule,
     MatSnackBarModule,
+    MatNativeDateModule,
     MatDatepickerModule
   ],
   providers: [
