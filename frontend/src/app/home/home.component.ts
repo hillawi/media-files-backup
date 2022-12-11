@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
     };
     const options = {};
 
-    this.processing = true;
+    this.updateProgress();
 
     this.http.post<ResponseMessage>(this.apiBaseUrl + '/launchBackup', body, options)
       .subscribe({
@@ -106,13 +106,27 @@ export class HomeComponent implements OnInit {
           this.processedFiles = data.processedFiles;
           this.erroredFiles = data.erroredFiles;
           this.reportReady = true;
-          this.processing = false;
+          this.updateProgress();
         }, error: () => {
           this.successfulRequest = false;
           this.reportReady = false;
-          this.processing = false;
+          this.updateProgress();
         }
       });
+  }
+
+  private updateProgress() {
+    if (this.processing) {
+      this.processing = false;
+      this.mediaTypeControl.enable();
+      this.sourceDeviceControl.enable();
+      this.targetDeviceControl.enable();
+    } else {
+      this.processing = true;
+      this.mediaTypeControl.disable();
+      this.sourceDeviceControl.disable();
+      this.targetDeviceControl.disable();
+    }
   }
 
   showSpinner() {

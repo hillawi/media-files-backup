@@ -4,45 +4,56 @@
       <div class="card-container">
         <mat-form-field appearance="outline">
           <mat-label>Media Type</mat-label>
-          <mat-select required formControlName="mediaType" [disabled]="processing">
+          <mat-select required formControlName="mediaType">
             <mat-option *ngFor="let mediaType of mediaTypes" [value]="mediaType">
               {{mediaType.name}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="mediaTypeControl.hasError('required')">Please choose a media type</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Start Date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="startDateControl"/>
-          <!--<mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>-->
-          <mat-datepicker-toggle matIconSuffix [for]="picker">
-            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-          </mat-datepicker-toggle>
-          <mat-datepicker #picker startView="month" [startAt]="startDateControl.defaultValue"></mat-datepicker>
-          <mat-error *ngIf="startDateControl.hasError('required')">Please choose a start date</mat-error>
-        </mat-form-field>
       </div>
       <div class="card-container">
         <mat-form-field appearance="outline">
           <mat-label>Source Device</mat-label>
-          <mat-select required formControlName="sourceDevice" [disabled]="processing">
+          <mat-select required formControlName="sourceDevice">
             <mat-option *ngFor="let sourceDevice of sourceDevices" [value]="sourceDevice">
               {{sourceDevice.name}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="sourceDeviceControl.hasError('required')">Please choose a Device</mat-error>
         </mat-form-field>
-        <div class="source-target-arrow">
+        <span class="source-target-arrow">
           <mat-icon>arrow_circle_right</mat-icon>
-        </div>
+        </span>
         <mat-form-field appearance="outline">
           <mat-label>Target Device</mat-label>
-          <mat-select required formControlName="targetDevice" [disabled]="processing">
+          <mat-select required formControlName="targetDevice">
             <mat-option *ngFor="let targetDevice of targetDevices" [value]="targetDevice">
               {{targetDevice.name}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="sourceDeviceControl.hasError('required')">Please choose a Device</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="card-container">
+        <mat-form-field appearance="outline">
+          <mat-label>From</mat-label>
+          <input matInput [matDatepicker]="fromPicker"/>
+          <mat-datepicker-toggle matIconSuffix [for]="fromPicker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #fromPicker startView="month" [startAt]="startDateControl.defaultValue"></mat-datepicker>
+          <mat-error *ngIf="startDateControl.hasError('required')">Please choose a start date</mat-error>
+        </mat-form-field>
+        <span class="source-target-arrow"></span>
+        <mat-form-field appearance="outline">
+          <mat-label>To</mat-label>
+          <input matInput [matDatepicker]="toPicker"/>
+          <mat-datepicker-toggle matIconSuffix [for]="toPicker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #toPicker startView="month" [startAt]="startDateControl.defaultValue"></mat-datepicker>
+          <mat-error *ngIf="startDateControl.hasError('required')">Please choose an end date</mat-error>
         </mat-form-field>
       </div>
 
