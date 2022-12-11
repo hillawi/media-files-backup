@@ -17,7 +17,11 @@ export class ErrorService {
     } else {
       switch (errorResponse.status) {
         case 400:
-          errorMsg = `${errorResponse.status}: Bad request`;
+          if (errorResponse.error.detail) {
+            errorMsg = `${errorResponse.status}: ` + errorResponse.error.detail;
+          } else {
+            errorMsg = `${errorResponse.status}: Bad request`;
+          }
           break;
         case 404:
           errorMsg = `${errorResponse.status}: Not found`;
