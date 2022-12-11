@@ -60,10 +60,12 @@ export class HomeComponent implements OnInit {
   sourceDeviceControl = new FormControl<Device | null>(null, Validators.required);
   targetDeviceControl = new FormControl<Device | null>(null, Validators.required);
   mediaTypeControl = new FormControl<MediaType | null>(null, Validators.required);
+  startDateControl = new FormControl<Date | null>(new Date(), Validators.required)
   backupForm = new FormGroup({
     sourceDevice: this.sourceDeviceControl,
     targetDevice: this.targetDeviceControl,
-    mediaType: this.mediaTypeControl
+    mediaType: this.mediaTypeControl,
+    startDate: this.startDateControl
   });
 
   constructor(private http: HttpClient, private spinnerService: SpinnerService) {
@@ -90,7 +92,8 @@ export class HomeComponent implements OnInit {
     const body = {
       mediaType: this.backupForm.value.mediaType?.id,
       sourceDeviceId: this.backupForm.value.sourceDevice?.id,
-      targetDeviceId: this.backupForm.value.targetDevice?.id
+      targetDeviceId: this.backupForm.value.targetDevice?.id,
+      startDate: this.backupForm.value.startDate
     };
     const options = {};
 

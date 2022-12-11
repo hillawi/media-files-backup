@@ -11,6 +11,16 @@
           </mat-select>
           <mat-error *ngIf="mediaTypeControl.hasError('required')">Please choose a media type</mat-error>
         </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="startDateControl"/>
+          <!--<mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>-->
+          <mat-datepicker-toggle matIconSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker startView="month" [startAt]="startDateControl.defaultValue"></mat-datepicker>
+          <mat-error *ngIf="startDateControl.hasError('required')">Please choose a start date</mat-error>
+        </mat-form-field>
       </div>
       <div class="card-container">
         <mat-form-field appearance="outline">
