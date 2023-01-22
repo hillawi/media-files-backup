@@ -56,15 +56,16 @@ public class BackupServiceImpl implements BackupService {
 
         var targetSubPath = Paths.get(targetDevice.mountPath(), determineSubPath(sourceDevice, deviceMediaType));
 
-        var latestUpdateDate = startDate != null ? LocalDateTime.of(startDate, MIDNIGHT) :
+        var updateStartDate = startDate != null ? LocalDateTime.of(startDate, MIDNIGHT) :
                 findLatestUpdateDate(sourceDeviceId, deviceMediaType, targetSubPath);
+        var updateEndDate = LocalDateTime.of(endDate, MIDNIGHT);
 
         // TODO Use end date
 
         var filesPaths = findFiles(Paths.get(sourceDevice.mountPath() + deviceMediaType.name().toLowerCase()),
                 "glob:" + PATTERNS_PER_MEDIA_TYPE.get(deviceMediaType));
 
-        var processedFiles = doBackup(targetSubPath, filesPaths, latestUpdateDate);
+        var processedFiles = doBackup(targetSubPath, filesPaths, updateStartDate, updateEndDate);
 
         if (CollectionUtils.isEmpty(processedFiles)) {
             throw Problem.builder()
@@ -115,13 +116,15 @@ public class BackupServiceImpl implements BackupService {
         }
     }
 
-    private ArrayList<MediaFileDetails> doBackup(Path targetPath, List<Path> filePaths, LocalDateTime dateTime) {
+    private ArrayList<MediaFileDetails> doBackup(Path targetPath, List<Path> filePaths,
+                                                 LocalDateTime startDateTime, LocalDateTime endDateTime) {
         var processedFiles = new ArrayList<MediaFileDetails>();
         filePaths.stream()
                 .filter(p -> {
                     try {
                         FileTime creationTime = (FileTime) Files.getAttribute(p, "creationTime");
-                        return LocalDateTime.ofInstant(creationTime.toInstant(), ZoneOffset.UTC).compareTo(dateTime) >= 0;
+                        LocalDateTime creationDateTime = LocalDateTime.ofInstant(creationTime.toInstant(), ZoneOffset.UTC);
+                        return creationDateTime.compareTo(startDateTime) >= 0 && creationDateTime.compareTo(endDateTime) <= 0;
                     } catch (IOException e) {
                         log.error("Can't determine file creation time for file {}", p.getFileName(), e);
                         return false;
