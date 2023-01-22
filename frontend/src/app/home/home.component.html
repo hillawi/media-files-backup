@@ -38,29 +38,29 @@
       <div class="card-container">
         <mat-form-field appearance="outline">
           <mat-label>From</mat-label>
-          <input matInput [matDatepicker]="fromPicker"/>
+          <input matInput required [matDatepicker]="fromPicker" [formControl]="startDateControl"/>
           <mat-datepicker-toggle matIconSuffix [for]="fromPicker">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
           </mat-datepicker-toggle>
-          <mat-datepicker #fromPicker startView="month" [startAt]="startDateControl.defaultValue"></mat-datepicker>
-          <mat-error *ngIf="startDateControl.hasError('required')">Please choose a start date</mat-error>
+          <mat-datepicker #fromPicker startView="month"></mat-datepicker>
+          <mat-error *ngIf="startDateControl.hasError('required')">The start date is required</mat-error>
         </mat-form-field>
         <span class="source-target-arrow"></span>
         <mat-form-field appearance="outline">
           <mat-label>To</mat-label>
-          <input matInput [matDatepicker]="toPicker"/>
+          <input matInput required [matDatepicker]="toPicker" [formControl]="endDateControl"/>
           <mat-datepicker-toggle matIconSuffix [for]="toPicker">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
           </mat-datepicker-toggle>
-          <mat-datepicker #toPicker startView="month" [startAt]="startDateControl.defaultValue"></mat-datepicker>
-          <mat-error *ngIf="startDateControl.hasError('required')">Please choose an end date</mat-error>
+          <mat-datepicker #toPicker startView="month" [startAt]="endDateControl.defaultValue"></mat-datepicker>
+          <mat-error *ngIf="endDateControl.hasError('required')">The end date is required</mat-error>
         </mat-form-field>
+        <mat-error *ngIf="backupForm.hasError('invalidDates')">The start date should be before the end date</mat-error>
+        <mat-error *ngIf="backupForm.hasError('invalidDate')">The start and end dates should be in the past</mat-error>
       </div>
 
       <div class="card-container">
-        <button mat-raised-button type="submit" [disabled]="backupForm.invalid || processing">
-          Launch Backup
-        </button>
+        <button mat-raised-button type="submit" >Launch Backup</button>
       </div>
 
       <div class="card-container">

@@ -3,6 +3,7 @@ import {environment} from "../../environments/environment";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {SpinnerService} from "../../service/spinner.service";
+import {formControl} from "@angular/core/schematics/migrations/typed-forms/util";
 
 interface Device {
   id: string;
@@ -60,12 +61,14 @@ export class HomeComponent implements OnInit {
   sourceDeviceControl = new FormControl<Device | null>(null, Validators.required);
   targetDeviceControl = new FormControl<Device | null>(null, Validators.required);
   mediaTypeControl = new FormControl<MediaType | null>(null, Validators.required);
-  startDateControl = new FormControl<Date | null>(new Date(), Validators.required)
+  startDateControl = new FormControl<Date | null>(null, [Validators.required, this.validateStartEndDates])
+  endDateControl = new FormControl<Date | null>(null, [Validators.required, this.validateStartEndDates, this.validatePastDates])
   backupForm = new FormGroup({
     sourceDevice: this.sourceDeviceControl,
     targetDevice: this.targetDeviceControl,
     mediaType: this.mediaTypeControl,
-    startDate: this.startDateControl
+    startDate: this.startDateControl,
+    endDate: this.endDateControl
   });
 
   constructor(private http: HttpClient, private spinnerService: SpinnerService) {
@@ -81,11 +84,33 @@ export class HomeComponent implements OnInit {
       this.targetDevices = res.filter(device => device.type === 'target');
     });
 
-    // TODO re check
     this.mediaTypeControl.setValue(this.mediaTypes[0])
     this.sourceDeviceControl.setValue(this.sourceDevices[0]);
     this.targetDeviceControl.setValue(this.targetDevices[0]);
-    //this.backupForm.updateValueAndValidity({onlySelf: false, emitEvent: true});
+  }
+
+  validateStartEndDates(control: FormControl): { [key: string]: boolean } | null {
+    // Compare start date and end date
+    if (control && control.parent) {
+      let startDate = control.parent.get('startDate');
+      let endDate = control.parent.get('endDate');
+      if (startDate && endDate) {
+        const startDateValue = startDate.value;
+        const endDateValue = endDate.value;
+        if (startDateValue && endDateValue && startDateValue > endDateValue) {
+          return {invalidDates: true};
+        }
+      }
+    }
+    return null;
+  }
+
+  validatePastDates(control: FormControl): { [key: string]: any } | null {
+    // Compare date with current date
+    if (control.value && control.value > new Date().toISOString().substr(0, 10)) {
+      return {invalidDate: true};
+    }
+    return null;
   }
 
   onSubmit(): void {
@@ -93,26 +118,24 @@ export class HomeComponent implements OnInit {
       mediaType: this.backupForm.value.mediaType?.id,
       sourceDeviceId: this.backupForm.value.sourceDevice?.id,
       targetDeviceId: this.backupForm.value.targetDevice?.id,
-      startDate: this.backupForm.value.startDate
+      startDate: this.backupForm.value.startDate,
+      endDate: this.backupForm.value.endDate
     };
     const options = {};
-
     this.updateProgress();
-
-    this.http.post<ResponseMessage>(this.apiBaseUrl + '/launchBackup', body, options)
-      .subscribe({
-        next: (data) => {
-          this.successfulRequest = true;
-          this.processedFiles = data.processedFiles;
-          this.erroredFiles = data.erroredFiles;
-          this.reportReady = true;
-          this.updateProgress();
-        }, error: () => {
-          this.successfulRequest = false;
-          this.reportReady = false;
-          this.updateProgress();
-        }
-      });
+    this.http.post<ResponseMessage>(this.apiBaseUrl + '/launchBackup', body, options).subscribe({
+      next: (data) => {
+        this.successfulRequest = true;
+        this.processedFiles = data.processedFiles;
+        this.erroredFiles = data.erroredFiles;
+        this.reportReady = true;
+        this.updateProgress();
+      }, error: () => {
+        this.successfulRequest = false;
+        this.reportReady = false;
+        this.updateProgress();
+      }
+    });
   }
 
   private updateProgress() {

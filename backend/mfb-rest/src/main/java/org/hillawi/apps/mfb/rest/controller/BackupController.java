@@ -24,7 +24,7 @@ public class BackupController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public BackupReport launchBackup(@RequestBody BackupDto backupDto) {
         return backupService.execute(backupDto.sourceDeviceId(), backupDto.targetDeviceId(),
-                backupDto.mediaType(), backupDto.startDate(), null);
+                backupDto.mediaType(), backupDto.startDate(), backupDto.endDate());
     }
 
 }

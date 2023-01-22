@@ -1,6 +1,7 @@
 package org.hillawi.apps.mfb.rest.service.impl;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.hillawi.apps.mfb.rest.domain.BackupReport;
 import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
 import org.hillawi.apps.mfb.rest.domain.MediaFileDetails;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Ahmed Hillawi
  * @since 15/11/22
  */
+@Slf4j
 @Service
 @Profile("dummy")
 public class BackupServiceDummyImpl implements BackupService {
@@ -22,6 +24,7 @@ public class BackupServiceDummyImpl implements BackupService {
     @SneakyThrows
     @Override
     public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType, LocalDate startDate, LocalDate endDate) {
+        log.info("Received the following backup data: sourceDeviceId={}, targetDeviceId={}, deviceMediaType={}, startDate={}, endDate={}", sourceDeviceId, targetDeviceId, deviceMediaType, startDate, endDate);
         Thread.sleep(5000L);
         return new BackupReport(
                 List.of(new MediaFileDetails("20221111.jpg", 10),
