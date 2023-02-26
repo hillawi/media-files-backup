@@ -79,9 +79,12 @@ export class HomeComponent implements OnInit {
   }
 
   initDevices(): void {
-    this.http.get<Device[]>(this.apiBaseUrl + '/devices').subscribe(res => {
-      this.sourceDevices = res.filter(device => device.type === 'source');
-      this.targetDevices = res.filter(device => device.type === 'target');
+    this.http.get<Device[]>(this.apiBaseUrl + '/devices/sources').subscribe(res => {
+      this.sourceDevices = res;
+    });
+
+    this.http.get<Device[]>(this.apiBaseUrl + '/devices/targets').subscribe(res => {
+      this.targetDevices = res;
     });
 
     this.mediaTypeControl.setValue(this.mediaTypes[0])
