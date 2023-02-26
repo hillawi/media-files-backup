@@ -2,9 +2,9 @@ package org.hillawi.apps.mfb.rest.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.hillawi.apps.mfb.rest.domain.Device;
+import org.hillawi.apps.mfb.rest.domain.SourceDevice;
+import org.hillawi.apps.mfb.rest.domain.TargetDevice;
 import org.hillawi.apps.mfb.rest.service.DeviceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.stereotype.Service;
@@ -18,16 +18,30 @@ import java.util.Arrays;
 @Service
 public class DeviceServiceImpl implements DeviceService {
 
-    @Value("${mfb.devices-url}")
-    private FileUrlResource devicesResource;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final FileUrlResource sourceDevicesResource;
+    private final FileUrlResource targetDevicesResource;
+    private final ObjectMapper objectMapper;
+
+    public DeviceServiceImpl(@Value("${mfb.devices.sources-url}") FileUrlResource sourceDevicesResource,
+                             @Value("${mfb.devices.targets-url}") FileUrlResource targetDevicesResource,
+                             ObjectMapper objectMapper) {
+        this.sourceDevicesResource = sourceDevicesResource;
+        this.targetDevicesResource = targetDevicesResource;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     @SneakyThrows
-    public Device findById(String deviceId) {
-        Device[] devices = objectMapper.readValue(devicesResource.getURL(), Device[].class);
-        return Arrays.stream(devices).filter(d -> d.id().equals(deviceId)).findFirst().get();
+    public SourceDevice findSourceDeviceById(String deviceId) {
+        SourceDevice[] targetDevices = objectMapper.readValue(sourceDevicesResource.getURL(), SourceDevice[].class);
+        return Arrays.stream(targetDevices).filter(d -> d.id().equals(deviceId)).findFirst().orElseThrow();
+    }
+
+    @Override
+    @SneakyThrows
+    public TargetDevice findTargetDeviceById(String deviceId) {
+        TargetDevice[] targetDevices = objectMapper.readValue(targetDevicesResource.getURL(), TargetDevice[].class);
+        return Arrays.stream(targetDevices).filter(d -> d.id().equals(deviceId)).findFirst().orElseThrow();
     }
 
 }

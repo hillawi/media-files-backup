@@ -14,12 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DevicesController {
 
-    @Value("${mfb.devices-url}")
-    private FileUrlResource devicesResource;
+    private final FileUrlResource sourceDevicesResource;
+    private final FileUrlResource targetDevicesResource;
 
-    @GetMapping(value = "/devices", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Resource devices() {
-        return devicesResource;
+    public DevicesController(@Value("${mfb.devices.sources-url}") FileUrlResource sourceDevicesResource,
+                             @Value("${mfb.devices.targets-url}") FileUrlResource targetDevicesResource) {
+        this.sourceDevicesResource = sourceDevicesResource;
+        this.targetDevicesResource = targetDevicesResource;
+    }
+
+    @GetMapping(value = "/devices/sources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resource sourceDevices() {
+        return sourceDevicesResource;
+    }
+
+    @GetMapping(value = "/devices/targets", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resource targetDevices() {
+        return targetDevicesResource;
     }
 
 }

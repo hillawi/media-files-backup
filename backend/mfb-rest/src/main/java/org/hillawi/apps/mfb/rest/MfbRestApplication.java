@@ -15,5 +15,4 @@ public class MfbRestApplication {
     public static void main(String[] args) {
         SpringApplication.run(MfbRestApplication.class, args);
     }
-
 }

@@ -3,10 +3,7 @@ package org.hillawi.apps.mfb.rest.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.hillawi.apps.mfb.rest.domain.BackupReport;
-import org.hillawi.apps.mfb.rest.domain.Device;
-import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
-import org.hillawi.apps.mfb.rest.domain.MediaFileDetails;
+import org.hillawi.apps.mfb.rest.domain.*;
 import org.hillawi.apps.mfb.rest.domain.exception.BackupException;
 import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.hillawi.apps.mfb.rest.service.DeviceService;
@@ -51,8 +48,8 @@ public class BackupServiceImpl implements BackupService {
     @Override
     public BackupReport execute(String sourceDeviceId, String targetDeviceId, DeviceMediaType deviceMediaType,
                                 LocalDate startDate, LocalDate endDate) {
-        var sourceDevice = deviceService.findById(sourceDeviceId);
-        var targetDevice = deviceService.findById(targetDeviceId);
+        var sourceDevice = deviceService.findSourceDeviceById(sourceDeviceId);
+        var targetDevice = deviceService.findTargetDeviceById(targetDeviceId);
 
         var targetSubPath = Paths.get(targetDevice.mountPath(), determineSubPath(sourceDevice, deviceMediaType));
 
@@ -176,7 +173,7 @@ public class BackupServiceImpl implements BackupService {
         return date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
     }
 
-    private static String determineSubPath(Device sourceDevice, DeviceMediaType deviceMediaType) {
+    private static String determineSubPath(SourceDevice sourceDevice, DeviceMediaType deviceMediaType) {
         return switch (deviceMediaType) {
             case IMG -> sourceDevice.targetSubPath().img();
             case VID -> sourceDevice.targetSubPath().vid();
