@@ -1,0 +1,175 @@
+= Media Files Backup (MFB)
+
+Backup your pictures and videos files in an easy and fast way.
+
+== Supported systems
+
+This tool has been tested under Raspbian and Ubuntu
+
+    pi@raspberrypi:~ $ lsb_release -a
+    No LSB modules are available.
+    Distributor ID:	Raspbian
+    Description:	Raspbian GNU/Linux 10 (buster)
+    Release:	10
+    Codename:	buster
+
+    hillawi@hillawi:~$ lsb_release -a
+    LSB Version:	core-11.1.0ubuntu4-noarch:printing-11.1.0ubuntu4-noarch:security-11.1.0ubuntu4-noarch
+    Distributor ID:	Ubuntu
+    Description:	Ubuntu 22.04.1 LTS
+    Release:	22.04
+    Codename:	jammy
+
+== General information
+
+The media files (images and videos) should respect the following naming convention:
+
+* [IMG|VID]_YYYYMMDD[X].[jpg|mp4]
+
+Where:
+
+* *YYYY* the year
+* *DD* the month
+* *MM* the day
+* *X* any other characters
+
+This is usually the case for digital cameras and phones.
+
+== Installation and Getting Started
+The easiest way is to use the provided docker compose file:
+
+=== Launch using Docker
+
+    docker-compose up -d
+
+```yaml
+  services:
+  mfb-backend:
+    container_name: mfb-backend
+    privileged: true
+    image: aabdeen/mfb-backend:1.0.0
+    ports:
+      - "8387:8387"
+    volumes:
+      - /media:/media
+      - /opt/mfb/udev:/opt/mfb/udev
+  mfb-frontend:
+    container_name: mfb-frontend
+    image: aabdeen/mfb-frontend:1.0.0
+    ports:
+      - "8383:8383"
+```
+
+=== Backup your files using the script
+
+==== Run the script manually
+
+* Add the environment variables (see con/env.conf)
+* Mount the input and output end points (see conf/devices.conf)
+* To avoid backing up the whole media files, it is required to create a file named **latest_IMG** or **latest_VID** containing the starting date under the mount path (see conf/devices.conf)
+- Example, consider the following source and target devices
+
+    {
+        "id": "6t",
+        "type": "source",
+        ...
+        },
+        "targetSubPath": {
+          "img": "OnePlus6T/Pictures",
+          "vid": "OnePlus6T/Videos"
+        }
+    }
+
+    {
+        "id": "sanDiskSsd1To",
+        "type": "target",
+        ...
+        "mountPath": "/opt/mfb/device/sanDiskSsd1To"
+    }
+
+- To back up images dating from January 1st 2022 (inclusive) the following file should be created
+
+    echo "2022-01-01" > /opt/mfb/device/sanDiskSsd1To/OnePlus6T/Pictures/latest_IMG
+
+* Run the script (backup_launcher.sh) with the following arguments:
+- The device ID (encoded earlier in conf/devices.conf)
+- The media type (IMG or VID)
+
+----
+$MFB_BIN_DIR/backup_launcher.sh 6t IMG
+----
+
+==== Backup your files automatically
+
+This feature uses udev.
+The idea is to launch the backup process as soon as a source device (type=source) and a target (type=target) devices are connected.
+
+1. You need to find your device ID and add it to conf/udev-mfb.rules
+a. For USB devices
+
+    pi@raspberrypi:~ $ udevadm info /dev/sda1 | grep ID_FS_UUID
+    E: ID_FS_UUID=9C2A-D57B
+    E: ID_FS_UUID_ENC=9C2A-D57B
+
+b. For OTP devices
+
+    pi@raspberrypi:/opt/mfb $ udevadm monitor -u
+    monitor will print the received events for:
+    UDEV - the event which udev sends out after rule processing
+    UDEV  [166824.939815] add      /devices/virtual/workqueue/scsi_tmf_0 (workqueue)
+    UDEV  [166825.018701] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.4 (usb)
+    UDEV  [166825.027845] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.4/1-1.4:1.0 (usb)
+
+    pi@raspberrypi:/opt/mfb $ udevadm info -a -p /sys/bus/usb/devices/1-1.4 | grep idProduct
+    ATTR{idProduct}=="f003"
+
+c. Update conf/99-udev-mfb.rules using your devices IDs
+
+2. Create the following directories
+
+    mkdir $MFB_HOME/work
+    mkdir $MFB_HOME/udev
+    mkdir $MFB_HOME/log
+
+3. Launch file_watcher.sh (uses inotifywait to monitor files creation under $MFB_HOME/udev)
+
+    sudo apt install inotify-tools -y
+    $MFB_BIN_DIR/file_watcher.sh
+
+4. Copy conf/99-udev-mfb.rules
+
+    cp conf/99-udev-mfb.rules /etc/udev/rules.d
+
+5. Plug in your source and target devices
+
+=== Backup your files using the Frontend
+
+* Start the backend (server.js - requires Node.js) in the same machine where the scripts are installed
+* Start the fronted (ng serve or ng build and deploy)
+* An example of nginx configuration is provided if needed (see conf/nginx-mfb.conf)
+
+=== Sequence Diagrams
+
+==== Using the Frontend
+
+```mermaid
+sequenceDiagram
+    ACTOR john as John Doe
+    participant front as Frontend
+    participant rest as REST API
+    participant bash as SYSTEM SCRIPT
+    participant config as CONFIGURATION
+    john->>+front: Access the home page
+    front->>+rest: Get devices
+    rest->>config: Read configurations
+    rest-->>-front: Devices list
+    front->>-john: Show the devices list
+    john->>+front: Launch backup
+    front->>+rest: Backup files
+    rest->>+bash: Backup files
+    bash->>config: Read configurations
+    bash->>bash: Do backup
+    bash->>-rest: Files backed up
+    rest->>-front: Files backed up
+    front->>-john: Backup done
+```
