@@ -3,7 +3,10 @@ package org.hillawi.apps.mfb.rest.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.hillawi.apps.mfb.rest.domain.*;
+import org.hillawi.apps.mfb.rest.domain.BackupReport;
+import org.hillawi.apps.mfb.rest.domain.DeviceMediaType;
+import org.hillawi.apps.mfb.rest.domain.MediaFileDetails;
+import org.hillawi.apps.mfb.rest.domain.SourceDevice;
 import org.hillawi.apps.mfb.rest.domain.exception.BackupException;
 import org.hillawi.apps.mfb.rest.service.BackupService;
 import org.hillawi.apps.mfb.rest.service.DeviceService;
@@ -36,7 +39,10 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class BackupServiceImpl implements BackupService {
 
     private static final EnumMap<DeviceMediaType, String> PATTERNS_PER_MEDIA_TYPE = new EnumMap<>(DeviceMediaType.class);
-    public static final LocalTime MIDNIGHT = LocalTime.of(0, 0);
+    private static final LocalTime MIDNIGHT = LocalTime.of(0, 0);
+    private static final LocalDateTime FAR_IN_THE_FUTURE =
+            LocalDateTime.of(LocalDate.of(9999, 12, 31), MIDNIGHT);
+
 
     static {
         PATTERNS_PER_MEDIA_TYPE.put(DeviceMediaType.IMG, "IMG_*.{jpg,jpeg,JPG,JPEG}");
@@ -55,12 +61,12 @@ public class BackupServiceImpl implements BackupService {
 
         var updateStartDate = startDate != null ? LocalDateTime.of(startDate, MIDNIGHT) :
                 findLatestUpdateDate(sourceDeviceId, deviceMediaType, targetSubPath);
-        var updateEndDate = LocalDateTime.of(endDate, MIDNIGHT);
+        var updateEndDate = endDate != null ? LocalDateTime.of(endDate, MIDNIGHT) : FAR_IN_THE_FUTURE;
 
         // TODO Use end date
 
-        var filesPaths = findFiles(Paths.get(sourceDevice.mountPath() + deviceMediaType.name().toLowerCase()),
-                "glob:" + PATTERNS_PER_MEDIA_TYPE.get(deviceMediaType));
+        String devicePath = determineSourceDevicePath(sourceDevice, deviceMediaType);
+        var filesPaths = findFiles(Paths.get(devicePath), "glob:" + PATTERNS_PER_MEDIA_TYPE.get(deviceMediaType));
 
         var processedFiles = doBackup(targetSubPath, filesPaths, updateStartDate, updateEndDate);
 
@@ -177,6 +183,13 @@ public class BackupServiceImpl implements BackupService {
         return switch (deviceMediaType) {
             case IMG -> sourceDevice.targetSubPath().img();
             case VID -> sourceDevice.targetSubPath().vid();
+        };
+    }
+
+    private String determineSourceDevicePath(SourceDevice sourceDevice, DeviceMediaType deviceMediaType) {
+        return switch (deviceMediaType) {
+            case IMG -> sourceDevice.mountPath().img();
+            case VID -> sourceDevice.mountPath().vid();
         };
     }
 
