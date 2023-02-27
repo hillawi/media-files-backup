@@ -14,10 +14,22 @@ import {CustomHttpInterceptor} from "../interceptor/http-interceptor";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {MatListModule} from "@angular/material/list";
+import {MatTableModule} from "@angular/material/table";
+import {FilesDetailsComponent} from './files-details/files-details.component';
+import {HomeComponent} from './home/home.component';
+import {ErrorComponent} from './error/error.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FilesDetailsComponent,
+    HomeComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +44,13 @@ import {MatGridListModule} from "@angular/material/grid-list";
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    MatGridListModule
+    MatGridListModule,
+    MatListModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatSnackBarModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [
     {

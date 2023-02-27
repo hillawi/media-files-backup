@@ -2,12 +2,13 @@ import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
-import {SpinnerService} from "../service/spinner-service";
+import {SpinnerService} from "../service/spinner.service";
+import {ErrorService} from "../app/error-service";
 
 @Injectable()
 export class CustomHttpInterceptor implements HttpInterceptor {
 
-  constructor(private spinnerService: SpinnerService) {
+  constructor(private spinnerService: SpinnerService, private errorService: ErrorService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -19,7 +20,8 @@ export class CustomHttpInterceptor implements HttpInterceptor {
           if (event instanceof HttpResponse) {
             this.spinnerService.hide();
           }
-        }, error: () => {
+        }, error: (errorResponse) => {
+          this.errorService.handleError(errorResponse)
           this.spinnerService.hide();
         }
       })));
