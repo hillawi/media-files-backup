@@ -19,4 +19,66 @@ This is usually the case for digital cameras and phones.
 
 == Installation and Getting Started
 
-- TODO complete the documentation
+=== Launch using Docker
+
+    docker-compose up -d
+
+```yaml
+services:
+  mfb-config:
+    container_name: mfb-config
+    privileged: true
+    hostname: mfb-config
+    image: aabdeen/mfb-config:0.0.1-SNAPSHOT
+    expose:
+      - "8787"
+    ports:
+      - "8787:8787"
+    environment:
+      SPRING_PROFILES_ACTIVE: basic,offline
+      MFB_CONF_DIR: /opt/mfb/conf
+    volumes:
+      - /opt/mfb/conf:/opt/mfb/conf
+    networks:
+      - mfb-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8787/mfb-rest/docker"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+  mfb-rest:
+    container_name: mfb-rest
+    privileged: true
+    hostname: mfb-rest
+    image: aabdeen/mfb-rest:0.0.1-SNAPSHOT
+    expose:
+      - "8387"
+    ports:
+      - "8387:8387"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker 
+      MFB_HOME: /opt/mfb
+      spring.config.import: "configserver:http://mfb-config:8787"
+    volumes:
+      - /opt/mfb:/opt/mfb
+      - /media/ahmedhillawi:/media/ahmedhillawi
+    networks:
+      - mfb-network
+    depends_on:
+      - mfb-config
+    restart: on-failure
+  mfb-frontend:
+    container_name: mfb-frontend
+    image: aabdeen/mfb-frontend:0.0.1-SNAPSHOT
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8383:8383"
+networks:
+  mfb-network:
+    name: mfb-network
+    driver: bridge
+    external: true
+```
