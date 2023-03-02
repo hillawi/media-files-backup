@@ -21,7 +21,7 @@ This is usually the case for digital cameras and phones.
 
 === Configuration
 
-Run the provided script to setup the directores structure link:backend/bin/generate_config.sh
+Run the backend/bin/generate_config.sh[``provided script``] to setup the directores structure.
 
 Those directorie will contain:
 
