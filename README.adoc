@@ -19,6 +19,20 @@ This is usually the case for digital cameras and phones.
 
 == Installation and Getting Started
 
+=== Configuration
+
+Run the provided script to setup the directores structure (link:backend/bin/generate_config.sh).
+
+Those directorie will contain:
+
+* The devices configuration file (devices.json)
+* The git repository used by mfb-config (configuration of the rest service)
+* The mount points for the source and target devices
+
+```console
+export MFB_HOME=/opt/mfb
+```
+
 === Launch using Docker
 
     docker-compose up -d
