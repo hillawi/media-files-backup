@@ -1,4 +1,4 @@
-= Media Files Backup (MFB)
+= Media Files Backup (MFB) =
 
 Backup your pictures and videos files in an easy and fast way.
 
@@ -21,13 +21,36 @@ This is usually the case for digital cameras and phones.
 
 === Configuration
 
-Run the backend/bin/generate_config.sh[``provided script``] to setup the directores structure.
+==== Run the provided script to set up the directories structure.
 
-Those directorie will contain:
+[source,bash,indent=0]
+```
+MFB_HOME=/opt/mfb ./backend/bin/generate_config.sh
+```
+
+Those directories will contain:
 
 * The devices configuration file (devices.json)
 * The git repository used by mfb-config (configuration of the rest service)
 * The mount points for the source and target devices
+
+==== Define the mount points
+
+Example:
+
+Source device
+[source,bash,indent=0]
+```
+mount -s /media/a/b/c/DCIM $MFB_HOME/device/myphone
+```
+
+Target device
+[source,bash,indent=0]
+```
+moutn -s /media/x/y/z/My_Phone_Media_Files $MFB_HOME/device/external_ssd_1TB
+```
+
+Note that, `myphone` and `external_ssd_1TB` are defined in `$MFB_HOME/conf/devices.json` as devices ID's.
 
 === Launch using Docker
 
