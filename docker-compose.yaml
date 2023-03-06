@@ -30,13 +30,16 @@ services:
       - "8387"
     ports:
       - "8387:8387"
+      - "5005:5005"
     environment:
       SPRING_PROFILES_ACTIVE: docker 
       MFB_HOME: /opt/mfb
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       spring.config.import: "configserver:http://mfb-config:8787"
     volumes:
-      - /opt/mfb:/opt/mfb
-      - /media/ahmedhillawi:/media/ahmedhillawi
+      - "/opt/mfb:/opt/mfb"
+      - "/media/ahmedhillawi:/media/ahmedhillawi"
+      - "/run/user/1000/gvfs/mtp:host=OnePlus_OnePlus_845cade8/'Internal shared storage'/DCIM/Camera:/opt/mfb/device/6t/img"
     networks:
       - mfb-network
     depends_on:
