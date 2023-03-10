@@ -12,7 +12,9 @@ services:
       SPRING_PROFILES_ACTIVE: basic,offline
       MFB_CONF_DIR: /opt/mfb/conf
     volumes:
-      - /opt/mfb/conf:/opt/mfb/conf
+      - type: bind
+        source: /opt/mfb/conf
+        target: /opt/mfb/conf
     networks:
       - mfb-network
     healthcheck:
@@ -37,9 +39,15 @@ services:
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       spring.config.import: "configserver:http://mfb-config:8787"
     volumes:
-      - "/opt/mfb:/opt/mfb"
-      - "/media/ahmedhillawi:/media/ahmedhillawi"
-      - "/run/user/1000/gvfs/mtp:host=OnePlus_OnePlus_845cade8/'Internal shared storage'/DCIM/Camera:/opt/mfb/device/6t/img"
+      - type: bind
+        source: /opt/mfb
+        target: /opt/mfb
+      - type: bind
+        source: /media/ahmedhillawi
+        target: /media/ahmedhillawi
+      - type: bind
+        source: /run/user/1000/gvfs/mtp\:host\=OnePlus_OnePlus_845cade8/Internal\ shared\ storage/DCIM/Camera
+        target: /opt/mfb/device/6t/img
     networks:
       - mfb-network
     depends_on:
