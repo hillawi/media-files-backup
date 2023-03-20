@@ -5,7 +5,7 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
   config:
-    import: "configserver:http://localhost:8787"
+    import: "configserver:${SPRING_CONFIG_URI}"
   application:
     name: mfb-rest
 server:
