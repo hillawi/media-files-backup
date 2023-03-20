@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mfb-config
+    domain: mfb
+  name: mfb-config
+spec:
+  ports:
+  - port: 80 
+    protocol: TCP
+    targetPort: 8787
+  selector:
+    app: mfb-config
+status:
+  loadBalancer: {}

@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: mfb-backend-config
-  name: mfb-backend-config
+    app: mfb-config
+  name: mfb-config
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: mfb-backend-config
+      app: mfb-config
   template:
     metadata:
       labels:
-        app: mfb-backend-config
+        app: mfb-config
         domain: mfb
         tier: backend
     spec:

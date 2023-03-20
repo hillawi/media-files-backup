@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: mfb-backend-rest
-  name: mfb-backend-rest
+    app: mfb-rest
+  name: mfb-rest
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: mfb-backend-rest
+      app: mfb-rest
   template:
     metadata:
       labels:
-        app: mfb-backend-rest
+        app: mfb-rest
         domain: mfb
         tier: backend
     spec:
