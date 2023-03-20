@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mfb-backend-config
+  name: mfb-backend-config
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: mfb-backend-config
+  template:
+    metadata:
+      labels:
+        app: mfb-backend-config
+        domain: mfb
+        tier: backend
+    spec:
+      containers:
+      - name: mfb-config
+        image: aabdeen/mfb-config:0.0.1-SNAPSHOT
+        ports:
+        - name: port-8787
+          containerPort: 8787
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: basic,offline
+        - name: MFB_CONF_DIR
+          value: /opt/mfb/conf
+        volumeMounts:
+        - name: conf-volume
+          mountPath: /opt/mfb/conf
+      volumes:
+      - name: conf-volume
+        hostPath:
+          path: /opt/mfb/conf

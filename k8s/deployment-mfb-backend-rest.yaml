@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mfb-backend-rest
+  name: mfb-backend-rest
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: mfb-backend-rest
+  template:
+    metadata:
+      labels:
+        app: mfb-backend-rest
+        domain: mfb
+        tier: backend
+    spec:
+      containers:
+      - name: mfb-rest
+        image: aabdeen/mfb-rest:0.0.1-SNAPSHOT
+        imagePullPolicy: Always
+        ports:
+        - name: port-8387
+          containerPort: 8387 
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker 
+        - name: MFB_HOME
+          value: /opt/mfb
+        - name: SPRING_CONFIG_URI 
+          value: "http://$(MFB_BACKEND_CONFIG_SERVICE_HOST):$(MFB_BACKEND_CONFIG_SERVICE_PORT)"
+        volumeMounts:
+        - name: mfb-volume
+          mountPath: /opt/mfb
+      volumes:
+      - name: mfb-volume
+        hostPath:
+          path: /opt/mfb

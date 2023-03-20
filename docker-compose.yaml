@@ -46,8 +46,11 @@ services:
         source: /media/ahmedhillawi
         target: /media/ahmedhillawi
       - type: bind
-        source: /run/user/1000/gvfs/mtp\:host\=OnePlus_OnePlus_845cade8/Internal\ shared\ storage/DCIM/Camera
+        source: /opt/mfb/device/6t/img 
         target: /opt/mfb/device/6t/img
+      - type: bind
+        source: /opt/mfb/device/6t/vid
+        target: /opt/mfb/device/6t/vid
     networks:
       - mfb-network
     depends_on:
