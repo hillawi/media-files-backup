@@ -19,6 +19,7 @@ spec:
       containers:
       - name: mfb-rest
         image: aabdeen/mfb-rest:0.0.1-SNAPSHOT
+        #image: aabdeen/mfb-rest:tmp
         imagePullPolicy: Always
         ports:
         - name: port-8387
@@ -29,7 +30,7 @@ spec:
         - name: MFB_HOME
           value: /opt/mfb
         - name: SPRING_CONFIG_URI 
-          value: "http://$(MFB_BACKEND_CONFIG_SERVICE_HOST):$(MFB_BACKEND_CONFIG_SERVICE_PORT)"
+          value: "$(MFB_CONFIG_SERVICE_HOST)"
         volumeMounts:
         - name: mfb-volume
           mountPath: /opt/mfb
