@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mfb-frontend
+  name: mfb-frontend
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: mfb-frontend
+  template:
+    metadata:
+      labels:
+        app: mfb-frontend
+        domain: mfb
+        tier: frontend 
+    spec:
+      containers:
+      - name: mfb-frontend
+        image: aabdeen/mfb-frontend:0.0.1-SNAPSHOT 
+        imagePullPolicy: Always
+        ports:
+        - name: port-8383
+          containerPort: 8383
+        env:
+        - name: MFB_REST_URI 
+          value: "$(MFB_REST_SERVICE_HOST)"
