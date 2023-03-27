@@ -5,6 +5,17 @@ spring:
 server:
   port: 8787
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "info,health,shutdown,env"
+    shutdown:
+      enabled: true
+  info:
+    build:
+      enabled: true
+
 ---
 
 spring:
