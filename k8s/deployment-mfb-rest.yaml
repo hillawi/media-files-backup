@@ -19,7 +19,6 @@ spec:
       containers:
       - name: mfb-rest
         image: aabdeen/mfb-rest:0.0.1-SNAPSHOT
-        #image: aabdeen/mfb-rest:tmp
         imagePullPolicy: Always
         ports:
         - name: port-8387
@@ -34,6 +33,20 @@ spec:
         volumeMounts:
         - name: mfb-volume
           mountPath: /opt/mfb
+        livenessProbe: 
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8387
+            scheme: HTTP 
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8387
+            scheme: HTTP 
       volumes:
       - name: mfb-volume
         hostPath:

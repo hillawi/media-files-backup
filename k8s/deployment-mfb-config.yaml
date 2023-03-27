@@ -19,6 +19,7 @@ spec:
       containers:
       - name: mfb-config
         image: aabdeen/mfb-config:0.0.1-SNAPSHOT
+        imagePullPolicy: Always
         ports:
         - name: port-8787
           containerPort: 8787
@@ -30,6 +31,20 @@ spec:
         volumeMounts:
         - name: conf-volume
           mountPath: /opt/mfb/conf
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8787
+            scheme: HTTP 
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8787
+            scheme: HTTP
       volumes:
       - name: conf-volume
         hostPath:
