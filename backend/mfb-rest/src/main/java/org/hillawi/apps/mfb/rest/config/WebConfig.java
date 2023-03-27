@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.zalando.problem.violations.ConstraintViolationProblemModule;
  * @author Ahmed Hillawi
  * @since 13/11/22
  */
+@Slf4j
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
@@ -29,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        log.info("CORS (origin: {}, headers: {})", frontendUrl, corsAllowedHeaders);
         registry.addMapping("/**")
                 .allowedOrigins(frontendUrl)
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
