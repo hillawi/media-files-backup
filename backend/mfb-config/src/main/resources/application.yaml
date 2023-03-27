@@ -9,9 +9,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "info,health,shutdown,env"
-    shutdown:
-      enabled: true
+        include: "info,health,env"
   info:
     build:
       enabled: true
