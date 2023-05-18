@@ -33,8 +33,8 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @SneakyThrows
     public SourceDevice findSourceDeviceById(String deviceId) {
-        SourceDevice[] targetDevices = objectMapper.readValue(sourceDevicesResource.getURL(), SourceDevice[].class);
-        return Arrays.stream(targetDevices).filter(d -> d.id().equals(deviceId)).findFirst().orElseThrow();
+        SourceDevice[] sourceDevices = objectMapper.readValue(sourceDevicesResource.getURL(), SourceDevice[].class);
+        return Arrays.stream(sourceDevices).filter(d -> d.id().equals(deviceId)).findFirst().orElseThrow();
     }
 
     @Override
