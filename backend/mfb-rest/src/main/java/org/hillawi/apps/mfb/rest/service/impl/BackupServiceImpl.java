@@ -114,7 +114,7 @@ public class BackupServiceImpl implements BackupService {
             // This filed should have only one line
             return LocalDateTime.of(LocalDate.parse(lines.get(0)), MIDNIGHT);
         } catch (IOException e) {
-            log.error("Cannot find the latest update file. Aborting.");
+            log.error("Cannot find the latest update file. Aborting.", e);
             throw new BackupException("Cannot find the latest update file. Make sure the source device is connected");
         }
     }
